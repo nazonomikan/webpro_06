@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <title>じゃんけん（ラジオ）</title>
+</head>
+
+<body>
+    <h1>じゃんけん（ラジオボタン）</h1>
+
+    <form method="get">
+        <input type="radio" name="hand" id="gu" value="グー" checked>
+        <label for="gu">グー</label>
+
+        <input type="radio" name="hand" id="choki" value="チョキ">
+        <label for="choki">チョキ</label>
+
+        <input type="radio" name="hand" id="pa" value="パー">
+        <label for="pa">パー</label>
+
+        <br><br>
+        <input type="submit" value="勝負する" formaction="/janken">
+        <input type="submit" value="リセットして勝負" formaction="/janken_reset">
+    </form>
+
+    <p><a href="/public">public ディレクトリへ</a></p>
+</body>
+
+</html>
