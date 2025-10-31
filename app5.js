@@ -36,6 +36,34 @@ app.get("/omikuji2", (req, res) => {
   res.render( 'omikuji2', {result:luck} );
 });
 
+app.get("/omikuji3", (req, res) => {
+  const num = Math.floor(Math.random() * 6 + 1);
+  let luck = '';
+  let comment = '';
+
+  if (num == 1) {
+    luck = '大吉';
+    comment = '絶好調です！...絶好調？好調×10%上昇する？？';
+  } else if (num == 2) {
+    luck = '中吉';
+    comment = '首が飛ばないようにしっかり抑えとけよ';
+  } else if (num == 3) {
+    luck = '小吉';
+    comment = '大凶になるように願っとくよ';
+  } else if (num == 4) {
+    luck = '吉';
+    comment = '平凡って面白みがないよな';
+  } else if (num == 5) {
+    luck = '末吉';
+    comment = 'ものは言いようだよな';
+  } else if (num == 6) {
+    luck = '凶';
+    comment = 'さっさと死んだ方がいいんじゃない？';
+  }
+
+  res.render('omikuji3', { result: luck, comment: comment });
+});
+
 app.get("/janken", (req, res) => {
   let hand = req.query.hand;
   let win = Number( req.query.win );
