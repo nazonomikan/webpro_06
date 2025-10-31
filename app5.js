@@ -115,8 +115,16 @@ app.get("/janken_reset", (req, res) => {
   else if( num==2 ) cpu = 'チョキ';
   else cpu = 'パー';
   // 人間の勝ちの場合の処理
-  judgement = '勝ち';
-  win += 1;
+  if ((hand == 'グー' && cpu == 'チョキ') ||
+    (hand == 'チョキ' && cpu == 'パー') ||
+    (hand == 'パー' && cpu == 'グー')) {
+    judgement = '勝ち';
+    win += 1;
+  } else if (hand == cpu) {
+    judgement = 'あいこ';
+  } else {
+    judgement = '負け';
+  }
   total += 1;
   const display = {
     your: hand,
