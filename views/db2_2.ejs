@@ -1,0 +1,45 @@
+<!Doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>京葉線の駅</title>
+</head>
+
+<body>
+    <h2>京葉線の駅の詳細</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>駅コード</th>
+            <th>駅名</th>
+            <th>乗り換え路線</th>
+            <th>一日あたりの乗降客数</th>
+            <th>東京駅からの距離(km)</th>
+        </tr>
+        <% for( let row of data ) { %>
+            <tr>
+                <td>
+                    <%= row.id %>
+                </td>
+                <td>
+                    <%= row.code %>
+                </td>
+                <td>
+                    <%= row.name %>
+                </td>
+                <td>
+                    <%= row.change %>
+                </td>
+                <td>
+                    <%= row.passengers %>
+                </td>
+                <td>
+                    <%= row.distance %>
+                </td>
+            </tr>
+            <% } %>
+    </table>
+</body>
+
+</html>

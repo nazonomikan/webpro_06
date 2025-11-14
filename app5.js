@@ -3,6 +3,8 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.use("/public", express.static(__dirname + "/public"));
+// Serve files in `public/` at the web root so `/keiyo2_add.html` works
+app.use(express.static(__dirname + "/public"));
 
 app.get("/", (req, res) => {
   res.render('home');
@@ -11,33 +13,33 @@ app.get("/", (req, res) => {
 app.get("/hello1", (req, res) => {
   const message1 = "Hello world";
   const message2 = "Bon jour";
-  res.render('show', { greet1:message1, greet2:message2});
+  res.render('show', { greet1: message1, greet2: message2 });
 });
 
 app.get("/hello2", (req, res) => {
-  res.render('show', { greet1:"Hello world", greet2:"Bon jour"});
+  res.render('show', { greet1: "Hello world", greet2: "Bon jour" });
 });
 
 app.get("/icon", (req, res) => {
-  res.render('icon', { filename:"./public/Apple_logo_black.svg", alt:"Apple Logo"});
+  res.render('icon', { filename: "./public/Apple_logo_black.svg", alt: "Apple Logo" });
 });
 
 app.get("/omikuji1", (req, res) => {
-  const num = Math.floor( Math.random() * 6 + 1 );
+  const num = Math.floor(Math.random() * 6 + 1);
   let luck = '';
-  if( num==1 ) luck = '大吉';
-  else if( num==2 ) luck = '中吉';
+  if (num == 1) luck = '大吉';
+  else if (num == 2) luck = '中吉';
 
-  res.send( '今日の運勢は' + luck + 'です' );
+  res.send('今日の運勢は' + luck + 'です');
 });
 
 app.get("/omikuji2", (req, res) => {
-  const num = Math.floor( Math.random() * 6 + 1 );
+  const num = Math.floor(Math.random() * 6 + 1);
   let luck = '';
-  if( num==1 ) luck = '大吉';
-  else if( num==2 ) luck = '中吉';
+  if (num == 1) luck = '大吉';
+  else if (num == 2) luck = '中吉';
 
-  res.render( 'omikuji2', {result:luck} );
+  res.render('omikuji2', { result: luck });
 });
 
 app.get("/omikuji3", (req, res) => {
@@ -70,24 +72,24 @@ app.get("/omikuji3", (req, res) => {
 
 app.get("/janken", (req, res) => {
   let hand = req.query.hand;
-  let win = Number( req.query.win );
-  let total = Number( req.query.total );
-  console.log( {hand, win, total});
-  const num = Math.floor( Math.random() * 3 + 1 );
+  let win = Number(req.query.win);
+  let total = Number(req.query.total);
+  console.log({ hand, win, total });
+  const num = Math.floor(Math.random() * 3 + 1);
   let cpu = '';
   let judgement = '';
-  if( num==1 ) cpu = 'グー';
-  else if( num==2 ) cpu = 'チョキ';
+  if (num == 1) cpu = 'グー';
+  else if (num == 2) cpu = 'チョキ';
   else cpu = 'パー';
   // ここに勝敗の判定を入れる
   // 以下の数行は人間の勝ちの場合の処理なので，
   // 判定に沿ってあいこと負けの処理を追加する
-  if( (hand=='グー' && cpu=='チョキ') ||
-      (hand=='チョキ' && cpu=='パー') ||
-      (hand=='パー' && cpu=='グー') ) {
+  if ((hand == 'グー' && cpu == 'チョキ') ||
+    (hand == 'チョキ' && cpu == 'パー') ||
+    (hand == 'パー' && cpu == 'グー')) {
     judgement = '勝ち';
     win += 1;
-  } else if( hand == cpu ) {
+  } else if (hand == cpu) {
     judgement = 'あいこ';
   } else {
     judgement = '負け';
@@ -100,19 +102,19 @@ app.get("/janken", (req, res) => {
     win: win,
     total: total
   }
-  res.render( 'janken', display );
+  res.render('janken', display);
 });
 
 app.get("/janken_reset", (req, res) => {
   let hand = req.query.hand;
   let win = 0;
   let total = 0;
-  console.log( {hand, win, total});
-  const num = Math.floor( Math.random() * 3 + 1 );
+  console.log({ hand, win, total });
+  const num = Math.floor(Math.random() * 3 + 1);
   let cpu = '';
   let judgement = '';
-  if( num==1 ) cpu = 'グー';
-  else if( num==2 ) cpu = 'チョキ';
+  if (num == 1) cpu = 'グー';
+  else if (num == 2) cpu = 'チョキ';
   else cpu = 'パー';
   // 人間の勝ちの場合の処理
   if ((hand == 'グー' && cpu == 'チョキ') ||
@@ -133,7 +135,7 @@ app.get("/janken_reset", (req, res) => {
     win: win,
     total: total
   }
-  res.render( 'janken', display );
+  res.render('janken', display);
 });
 
 
@@ -156,11 +158,22 @@ let station2 = [
 ];
 app.get("/keiyo", (req, res) => {
   // 本来ならここにDBとのやり取りが入る
-  res.render('db2', { data: station });
+  res.render('db1_2', { data: station });
 });
+
+app.get("/keiyo_add", (req, res) => {
+  let id = req.query.id;
+  let code = req.query.code;
+  let name = req.query.name;
+  let newdata = { id: id, code: code, name: name };
+  station.push(newdata);
+  res.render('db1_1', { data: station });
+  //res.redirect('/keiyo_add.html');
+});
+
 app.get("/keiyo2", (req, res) => {
   // 本来ならここにDBとのやり取りが入る
-  res.render('keiyo2', { data: station2 });
+  res.render('db2_2', { data: station2 });
 });
 
 app.get("/keiyo2/:number", (req, res) => {
@@ -170,14 +183,24 @@ app.get("/keiyo2/:number", (req, res) => {
   res.render('keiyo2_detail', { data: detail });
 });
 
-app.get("/keiyo_add", (req, res) => {
+app.get("/keiyo2_add.html", (req, res) => {
   let id = req.query.id;
   let code = req.query.code;
   let name = req.query.name;
-  let newdata = { id: id, code: code, name: name };
-  station.push(newdata);
-  res.render('db1', { data: station });
-  //res.redirect('/keiyo_add.html');
+  let change = req.query.change;
+  let passengers = req.query.passengers;
+  let distance = req.query.distance;
+  let newdata = {
+    id: id,
+    code: code,
+    name: name,
+    change: change,
+    passengers: passengers,
+    distance: distance
+  };
+  station2.push(newdata);
+  res.render('db2_1', { data: station2 });
+  //res.redirect('/keiyo2_add.html');
 });
 
 app.listen(8080, () => console.log("Example app listening on port 8080!"));

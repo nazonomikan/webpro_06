@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>駅を追加する</title>
+</head>
+
+<body>
+    <form action="/keiyo2_add.html">
+        <label for="id">ID</label>
+        <input type="number" name="id" id="id" required>
+        <br>
+        <label for="code">Code</label>
+        <input type="text" name="code" id="code" required>
+        <br>
+        <label for="name">駅名</label>
+        <input type="text" name="name" id="name" required>
+        <br>
+        <label for="change">乗り換え路線</label>
+        <input type="text" name="change" id="change" required>
+        <br>
+        <label for="passengers">一日あたりの乗降客数</label>
+        <input type="number" name="passengers" id="passengers" required>
+        <br>
+        <label for="distance">東京駅からの距離(km)</label>
+        <input type="number" step="0.1" name="distance" id="distance" required>
+        <br>
+        <input type="submit" value="登録">
+        <p><a href="/keiyo2">駅の一覧に戻る</a></p>
+    </form>
+</body>
+
+</html>
