@@ -1,0 +1,15 @@
+<!Doctype html>
+<html>  
+<head>
+    <meta charset="utf-8">
+    <title><%= data.name %>の削除確認</title>
+</head>
+<body>
+    <h2><%= data.name %>の削除確認</h2>
+    <p>本当にこの駅を削除してもよろしいですか？</p>
+    <form action="/keiyo2/delete/<%= data.id %>" method="post">
+        <input type="submit" value="削除">
+    </form>
+    <a href="/keiyo2">駅一覧に戻る</a>
+</body>
+</html>
