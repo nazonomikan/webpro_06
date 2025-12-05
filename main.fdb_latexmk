@@ -1,0 +1,14 @@
+# Fdb version 4
+["dvipdf"] 0 "main.dvi" "main.pdf" "main" 0 -1
+  "main.dvi" 0 -1 0 "latex"
+  (generated)
+  "main.pdf"
+  (rewritten before read)
+["latex"] 0 "main.tex" "main.dvi" "main" 0 -1
+  "main.aux" 0 -1 0 "latex"
+  "main.tex" 0 -1 0 ""
+  (generated)
+  "main.aux"
+  "main.dvi"
+  "main.log"
+  (rewritten before read)
