@@ -255,4 +255,34 @@ app.get("/keiyo2_add.html", (req, res) => {
   //res.redirect('/keiyo2_add.html');
 });
 
+let character = [
+  { id:1 , name: , type: , rarity: , skill_name: , skill_level:  , rank: , total_status: },
+  { id: 2, name: , type: , rarity: , skill_name: , skill_level:  , rank: , total_status: },
+  { id: 3, name: , type: , rarity: , skill_name: , skill_level:  , rank: , total_status: },
+  { id: 4, name: , type: , rarity: , skill_name: , skill_level:  , rank: , total_status: },
+{ id: 5, name: 夜風さらう本音 , type: cute, rarity: 4, skill_name: sup, skill_level: 4 , rank: 5, total_status: },
+];
+
+// 期末課題用ページ
+app.get("/kimatu", (req, res) => {
+  res.render('kimatu');
+});
+
+// 所持キャラ一覧
+app.get("/character", (req, res) => {
+  res.render('character', { data: saki });
+});
+
+// 所持キャラ詳細
+app.get("/character/:id", (req, res) => {
+  const id = req.params.id;
+  const detail = saki.find(c => c.id == id);
+  res.render('character_detail', { data: detail });
+});
+
+// 編成画面
+app.get("/formation", (req, res) => {
+  res.render('formation', { data: saki });
+});
+
 app.listen(8080, () => console.log("Example app listening on port 8080!"));
