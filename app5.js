@@ -256,11 +256,27 @@ app.get("/keiyo2_add.html", (req, res) => {
 });
 
 let character = [
-  { id:1 , name: , type: , rarity: , skill_name: , skill_level:  , rank: , total_status: },
-  { id: 2, name: , type: , rarity: , skill_name: , skill_level:  , rank: , total_status: },
-  { id: 3, name: , type: , rarity: , skill_name: , skill_level:  , rank: , total_status: },
-  { id: 4, name: , type: , rarity: , skill_name: , skill_level:  , rank: , total_status: },
-{ id: 5, name: 夜風さらう本音 , type: cute, rarity: 4, skill_name: sup, skill_level: 4 , rank: 5, total_status: },
+  { id:  1, name: レイニーディスタンス, type: mysterious, rarity:4 , skill_name: nup, skill_level: 2, rank: 2, total_status:35798 },
+  { id:  2, name: 最高のひな祭り, type: pure, rarity:4 , skill_name: lif, skill_level: 2 , rank: 1 , total_status: 36095 },
+  { id:  3, name: 窓辺の語らい, type: cour, rarity:4 , skill_name: sup, skill_level: 2 , rank: 1 , total_status: 35788 },
+  { id:  4, name: 辿り着けた思い, type: hurt, rarity:4 , skill_name: jud , skill_level: 1 , rank: 0 , total_status: 36096 },
+  { id:  5, name: 次のライブのために, type: cour, rarity: 4, skill_name: sup, skill_level: 2 , rank: 1, total_status: 35791 },
+  { id:  6, name: 記憶の深淵, type: cute, rarity: 4, skill_name: nup, skill_level: 4 , rank: 5 , total_status: 35791 },
+  { id:  7, name: うとうとアートクラス, type: cute, rarity: 4, skill_name: lif, skill_level: 2 , rank: 5 , total_status: 36095 },
+  { id:  8, name: すべて受け止める覚悟を, type: pure, rarity: 4, skill_name: sup, skill_level: 2 , rank: 5 , total_status: 35792 },
+  { id:  9, name: パーテーションの陰から, type: myst, rarity: 4, skill_name: lif, skill_level: 1 , rank: 2 , total_status: 36094 },
+  { id: 10, name: 思い出を抱きしめて, type: hurt, rarity: 4, skill_name: lif, skill_level: 2 , rank: 1, total_status: 36097 },
+  { id: 11, name: feat.ポムポムプリン, type: cour, rarity: 4, skill_name: jud, skill_level: 2 , rank: 1, total_status: 36096 },
+  { id: 12, name: 空へはばたく祈り, type: cute, rarity: 4, skill_name: cup, skill_level: 4 , rank: 5 , total_status: 35792 },
+  { id: 13, name: ひとりになった部屋, type: hurt, rarity: 4, skill_name: duj, skill_level: 2 , rank: 1 , total_status: 36102 },
+  { id: 14, name: 四人一緒だから, type: cour, rarity: 4, skill_name: lif, skill_level: 2 , rank: 5 , total_status: 36102 },
+  { id: 15, name: あの日の憧れ, type: myst, rarity: 4, skill_name: nup, skill_level: 2 , rank: 2, total_status: 35792 },
+  { id: 16, name: 楽しくて幸せな音楽, type: hurt, rarity: 4, skill_name: nup, skill_level: 4 , rank: 5 , total_status: 35792 },
+  { id: 17, name: あふれる感謝, type: cour, rarity: 4, skill_name: lif, skill_level: 1 , rank: 0 , total_status: 36102 },
+  { id: 18, name: 難航企画会議, type: pure, rarity: 4, skill_name: lif, skill_level: 2 , rank: 2 , total_status: 36102 },
+  { id: 19, name: エースプレイヤー, type: cute, rarity: 4, skill_name: nup, skill_level: 4 , rank: 5 , total_status: 35792 },
+  { id: 20, name: ラッキーアイス, type: pure, rarity: 4, skill_name: nup, skill_level: 2 , rank: 2 , total_status: 35792 },
+  { id: 21, name: 夜風さらう本音 , type: cute, rarity: 4, skill_name: sup, skill_level: 4 , rank: 5, total_status: 35792 },
 ];
 
 // 期末課題用ページ
