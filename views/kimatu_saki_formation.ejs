@@ -34,7 +34,7 @@
                         <label>
                             <input type="checkbox" name="selected" value="<%= item.id %>" <%=checked ? 'checked' : '' %>
                             data-idx="<%= idx %>" data-status="<%= (typeof modifiedMap !=='undefined' &&
-                                    modifiedMap[item.id]) ? modifiedMap[item.id] : (item.total_status || 0) %>"
+                                    modifiedMap[item.id]) ? modifiedMap[item.id] : (item.total_status || 0) %"
                                     data-type="<%= item.type %>" data-type-percent="<%= (typeof typeBonuses
                                             !=='undefined' ? (typeBonuses[item.type] || 0) : 0) %>">
                                             <strong>

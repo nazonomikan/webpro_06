@@ -53,7 +53,7 @@ app.get("/omikuji3", (req, res) => {
     comment = '絶好調です！...絶好調？好調×10%上昇する？？';
   } else if (num == 2) {
     luck = '中吉';
-    comment = '首が飛ばないようにしっかり抑えとけよ';
+    comment = '';
   } else if (num == 3) {
     luck = '小吉';
     comment = '大凶になるように願っとくよ';
@@ -69,41 +69,6 @@ app.get("/omikuji3", (req, res) => {
   }
 
   res.render('omikuji3', { result: luck, comment: comment });
-});
-
-app.get("/janken", (req, res) => {
-  let hand = req.query.hand;
-  let win = Number(req.query.win);
-  let total = Number(req.query.total);
-  console.log({ hand, win, total });
-  const num = Math.floor(Math.random() * 3 + 1);
-  let cpu = '';
-  let judgement = '';
-  if (num == 1) cpu = 'グー';
-  else if (num == 2) cpu = 'チョキ';
-  else cpu = 'パー';
-  // ここに勝敗の判定を入れる
-  // 以下の数行は人間の勝ちの場合の処理なので，
-  // 判定に沿ってあいこと負けの処理を追加する
-  if ((hand == 'グー' && cpu == 'チョキ') ||
-    (hand == 'チョキ' && cpu == 'パー') ||
-    (hand == 'パー' && cpu == 'グー')) {
-    judgement = '勝ち';
-    win += 1;
-  } else if (hand == cpu) {
-    judgement = 'あいこ';
-  } else {
-    judgement = '負け';
-  }
-  total += 1;
-  const display = {
-    your: hand,
-    cpu: cpu,
-    judgement: judgement,
-    win: win,
-    total: total
-  }
-  res.render('janken', display);
 });
 
 app.get("/janken_reset", (req, res) => {
@@ -317,6 +282,38 @@ app.post("/kimatu_list", (req, res) => {
   res.render('kimatu_list', { data: saki });
 });
 
+// Edit (表示)
+app.get("/kimatu_list/edit/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const detail = saki.find(item => item.id === id);
+  if (!detail) return res.redirect('/kimatu_list');
+  res.render('kimatu_edit', { data: detail });
+});
+
+// Update (処理)
+app.post("/kimatu_list/update/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const index = saki.findIndex(item => item.id === id);
+  if (index === -1) return res.redirect('/kimatu_list');
+  saki[index].name = req.body.name;
+  saki[index].type = req.body.type;
+  saki[index].rarity = Number(req.body.rarity);
+  saki[index].skill_name = req.body.skill_name;
+  saki[index].skill_level = Number(req.body.skill_level);
+  saki[index].rank = Number(req.body.rank);
+  saki[index].total_status = Number(req.body.total_status);
+  console.log('updated', saki[index]);
+  res.redirect('/kimatu_list');
+});
+
+// Delete
+app.get("/kimatu_list/delete/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const index = saki.findIndex(item => item.id === id);
+  if (index !== -1) saki.splice(index, 1);
+  res.redirect('/kimatu_list');
+});
+
 // キャラクター追加
 app.get("/kimatu_new.html", (req, res) => {
   let id = saki.length + 1;
@@ -340,6 +337,7 @@ app.get("/kimatu_new.html", (req, res) => {
   saki.push(newdata);
   res.render('kimatu_list', { data: saki });
 });
+
 // 所持キャラ詳細
 app.get("/character/:id", (req, res) => {
   const id = Number(req.params.id);
@@ -352,28 +350,40 @@ let formation = [];
 
 // 編成画面表示（一覧とチェックで選択）
 app.get("/kimatu_formation", (req, res) => {
-  const totalSum = formation.reduce((acc, id) => {
-    const c = saki.find(x => x.id === id);
-    return acc + (c ? Number(c.total_status || 0) : 0);
-  }, 0);
-  res.render('kimatu_formation', { data: saki, formation: formation, totalSum: totalSum });
+  // 計算:マスタ―ランク(各+600),タイプボーナス,エクストラボーナス(+40%+15%+15%)
+  const typeBonuses = { 'キュート': 0.15, 'クール': 0.10, 'ピュア': 0.125, 'ミステリアス': 0.11, 'ハッピー': 0.125 };
+  const extraBonus = 0.40 + 0.15 + 0.15; // 合計 +70%
+  // 修正後の総合力
+  const modifiedMap = {};
+  saki.forEach(item => {
+    const base = Number(item.total_status || 0) + (Number(item.rank || 0) * 600);
+    const typePct = typeBonuses[item.type] || 0;
+    const modified = Math.round(base * (1 + typePct + extraBonus));
+    modifiedMap[item.id] = modified;
+  });
+  const totalSum = formation.reduce((acc, id) => acc + (modifiedMap[id] || 0), 0);
+  res.render('kimatu_formation', { data: saki, formation: formation, totalSum: totalSum, modifiedMap: modifiedMap, typeBonuses: typeBonuses });
 });
 
 // 編成保存
 app.post("/kimatu_formation", (req, res) => {
   let selected = req.body.selected || [];
   if (!Array.isArray(selected)) selected = [selected];
-  // サーバー側で最大5件に制限（多分あってる？？）
-  const allowedIds = saki.slice(0, 5).map(item => item.id);
+  // サーバー側で最大5件に制限（任意のキャラから最大5件）
   formation = selected
     .map(v => Number(v))
-    .filter(id => allowedIds.indexOf(id) !== -1)
     .slice(0, 5);
-  const totalSum = formation.reduce((acc, id) => {
-    const c = saki.find(x => x.id === id);
-    return acc + (c ? Number(c.total_status || 0) : 0);
-  }, 0);
-  res.render('kimatu_formation', { data: saki, formation: formation, totalSum: totalSum });
+  const typeBonuses = { 'キュート': 0.15, 'クール': 0.10, 'ピュア': 0.125, 'ミステリアス': 0.11, 'ハッピー': 0.125 };
+  const extraBonus = 0.40 + 0.15 + 0.15 + 0.05 + 0.04 + 0.04; // 合計 +83%
+  const modifiedMap = {};
+  saki.forEach(item => {
+    const base = Number(item.total_status || 0) + (Number(item.rank || 0) * 600);
+    const typePct = typeBonuses[item.type] || 0;
+    const modified = Math.round(base * (1 + typePct + extraBonus) );
+    modifiedMap[item.id] = modified;
+  });
+  const totalSum = formation.reduce((acc, id) => acc + (modifiedMap[id] || 0), 0);
+  res.render('kimatu_formation', { data: saki, formation: formation, totalSum: totalSum, modifiedMap: modifiedMap, typeBonuses: typeBonuses });
 });
 
 app.listen(8080, () => console.log("Example app listening on port 8080!"));
