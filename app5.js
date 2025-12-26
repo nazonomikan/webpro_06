@@ -251,24 +251,24 @@ app.get("/kimatu_home", (req, res) => {
 });
 
 // 所持キャラ一覧
-app.get("/kimatu_list", (req, res) => {
-  res.render('kimatu_list', { data: saki });
+app.get("/kimatu_saki_list", (req, res) => {
+  res.render('kimatu_saki_list', { data: saki });
 });
 
 // Create
-app.get("/kimatu_list/create", (req, res) => {
-  res.redirect('/public/kimatu_new.html');
+app.get("/kimatu_saki_list/create", (req, res) => {
+  res.redirect('/public/kimatu_saki.html');
 });
 
 // Read
-app.get("/kimatu_detail/:number", (req, res) => {
+app.get("/kimatu_saki_detail/:number", (req, res) => {
   const id = Number(req.params.number);
   const detail = saki.find(item => item.id === id);
-  res.render('kimatu_detail', { data: detail });
+  res.render('kimatu_saki_detail', { data: detail });
 });
 
 // Create処理
-app.post("/kimatu_list", (req, res) => {
+app.post("/kimatu_saki_list", (req, res) => {
   const id = saki.length + 1;
   const name = req.body.name;
   const type = req.body.type;
@@ -279,22 +279,22 @@ app.post("/kimatu_list", (req, res) => {
   const total_status = req.body.total_status;
   saki.push({ id: id, name: name, type: type, rarity: rarity, skill_name: skill_name, skill_level: skill_level, rank: rank, total_status: total_status });
   console.log(saki);
-  res.render('kimatu_list', { data: saki });
+  res.render('kimatu_saki_list', { data: saki });
 });
 
 // Edit (表示)
-app.get("/kimatu_list/edit/:id", (req, res) => {
+app.get("/kimatu_saki_list/edit/:id", (req, res) => {
   const id = Number(req.params.id);
   const detail = saki.find(item => item.id === id);
-  if (!detail) return res.redirect('/kimatu_list');
-  res.render('kimatu_edit', { data: detail });
+  if (!detail) return res.redirect('/kimatu_saki_list');
+  res.render('kimatu_saki_edit', { data: detail });
 });
 
 // Update (処理)
-app.post("/kimatu_list/update/:id", (req, res) => {
+app.post("/kimatu_saki_list/update/:id", (req, res) => {
   const id = Number(req.params.id);
   const index = saki.findIndex(item => item.id === id);
-  if (index === -1) return res.redirect('/kimatu_list');
+  if (index === -1) return res.redirect('/kimatu_saki_list');
   saki[index].name = req.body.name;
   saki[index].type = req.body.type;
   saki[index].rarity = Number(req.body.rarity);
@@ -303,19 +303,19 @@ app.post("/kimatu_list/update/:id", (req, res) => {
   saki[index].rank = Number(req.body.rank);
   saki[index].total_status = Number(req.body.total_status);
   console.log('updated', saki[index]);
-  res.redirect('/kimatu_list');
+  res.redirect('/kimatu_saki_list');
 });
 
 // Delete
-app.get("/kimatu_list/delete/:id", (req, res) => {
+app.get("/kimatu_saki_list/delete/:id", (req, res) => {
   const id = Number(req.params.id);
   const index = saki.findIndex(item => item.id === id);
   if (index !== -1) saki.splice(index, 1);
-  res.redirect('/kimatu_list');
+  res.redirect('/kimatu_saki_list');
 });
 
 // キャラクター追加
-app.get("/kimatu_new.html", (req, res) => {
+app.get("/kimatu_saki_new.html", (req, res) => {
   let id = saki.length + 1;
   let name = req.query.name;
   let type = req.query.type;
@@ -335,21 +335,21 @@ app.get("/kimatu_new.html", (req, res) => {
     total_status: total_status
   };
   saki.push(newdata);
-  res.render('kimatu_list', { data: saki });
+  res.render('kimatu_saki_list', { data: saki });
 });
 
 // 所持キャラ詳細
-app.get("/character/:id", (req, res) => {
+app.get("/kimatu_saki_detail/:id", (req, res) => {
   const id = Number(req.params.id);
   const detail = saki.find(c => c.id === id);
-  res.render('kimatu_detail', { data: detail });
+  res.render('kimatu_saki_detail', { data: detail });
 });
 
 // 編成関連（メモリ上に現在の編成を保持する）
 let formation = [];
 
 // 編成画面表示（一覧とチェックで選択）
-app.get("/kimatu_formation", (req, res) => {
+app.get("/kimatu_saki_formation", (req, res) => {
   // 計算:マスタ―ランク(各+600),タイプボーナス,エクストラボーナス(+40%+15%+15%)
   const typeBonuses = { 'キュート': 0.15, 'クール': 0.10, 'ピュア': 0.125, 'ミステリアス': 0.11, 'ハッピー': 0.125 };
   const extraBonus = 0.40 + 0.15 + 0.15; // 合計 +70%
@@ -362,11 +362,11 @@ app.get("/kimatu_formation", (req, res) => {
     modifiedMap[item.id] = modified;
   });
   const totalSum = formation.reduce((acc, id) => acc + (modifiedMap[id] || 0), 0);
-  res.render('kimatu_formation', { data: saki, formation: formation, totalSum: totalSum, modifiedMap: modifiedMap, typeBonuses: typeBonuses });
+  res.render('kimatu_saki_formation', { data: saki, formation: formation, totalSum: totalSum, modifiedMap: modifiedMap, typeBonuses: typeBonuses });
 });
 
 // 編成保存
-app.post("/kimatu_formation", (req, res) => {
+app.post("/kimatu_saki_formation", (req, res) => {
   let selected = req.body.selected || [];
   if (!Array.isArray(selected)) selected = [selected];
   // サーバー側で最大5件に制限（任意のキャラから最大5件）
@@ -383,7 +383,8 @@ app.post("/kimatu_formation", (req, res) => {
     modifiedMap[item.id] = modified;
   });
   const totalSum = formation.reduce((acc, id) => acc + (modifiedMap[id] || 0), 0);
-  res.render('kimatu_formation', { data: saki, formation: formation, totalSum: totalSum, modifiedMap: modifiedMap, typeBonuses: typeBonuses });
+  res.render('kimatu_saki_formation', { data: saki, formation: formation, totalSum: totalSum, modifiedMap: modifiedMap, typeBonuses: typeBonuses });
 });
 
-app.listen(8080, () => console.log("Example app listening on port 8080!"));
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`));

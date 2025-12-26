@@ -26,7 +26,7 @@
 
 <body>
     <h1>編成</h1>
-    <form method="post" action="/kimatu_formation">
+    <form method="post" action="/kimatu_saki_formation">
         <div class="grid">
             <% data.forEach(function(item, idx){ %>
                 <% const checked=formation && formation.indexOf(item.id) !==-1; %>
@@ -34,7 +34,7 @@
                         <label>
                             <input type="checkbox" name="selected" value="<%= item.id %>" <%=checked ? 'checked' : '' %>
                             data-idx="<%= idx %>" data-status="<%= (typeof modifiedMap !=='undefined' &&
-                                    modifiedMap[item.id]) ? modifiedMap[item.id] : (item.total_status || 0) %"
+                                    modifiedMap[item.id]) ? modifiedMap[item.id] : (item.total_status || 0) %>"
                                     data-type="<%= item.type %>" data-type-percent="<%= (typeof typeBonuses
                                             !=='undefined' ? (typeBonuses[item.type] || 0) : 0) %>">
                                             <strong>
@@ -48,7 +48,7 @@
                         <div>総合(修正後): <%= (typeof modifiedMap !=='undefined' && modifiedMap[item.id]) ?
                                 modifiedMap[item.id] : (item.total_status || '-' ) %>
                         </div>
-                        <div><a href="/kimatu_detail/<%= item.id %>">詳細</a></div>
+                        <div><a href="/kimatu_saki_detail/<%= item.id %>">詳細</a></div>
                     </div>
                     <% }) %>
         </div>
@@ -75,7 +75,9 @@
             <p>編成が選択されていません。</p>
             <% } %>
                 <br>
-                <a href="/kimatu_home">ホームに戻る</a>
+                <a href="/kimatu_saki_formation">編成する</a>
+                <a href="/kimatu_saki_list">キャラクター一覧に戻る</a>
+                <a href="/kimatu_home">期末課題のホームに戻る</a>
 
 </body>
 
@@ -83,8 +85,8 @@
 
 <script>
     (function () {
-        const maxSelect = 5;
-        const form = document.querySelector('form[action="/kimatu_formation"]');
+        const maxSelect = 5;// 編成可能枚数
+        const form = document.querySelector('form[action="/kimatu_saki_formation"]');
         const checkboxes = Array.from(form.querySelectorAll('input[type="checkbox"][name="selected"]'));
         const totalEl = document.getElementById('totalSum');
         function calcTotal() {

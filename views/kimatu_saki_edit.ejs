@@ -11,7 +11,7 @@
     <h2>
         <%= data.name %> を編集
     </h2>
-    <form method="post" action="/kimatu_list/update/<%= data.id %>">
+    <form method="post" action="/kimatu_saki_list/update/<%= data.id %>">
         <table>
             <tr>
                 <td>名前</td>
@@ -43,7 +43,7 @@
             </tr>
         </table>
         <button type="submit">保存</button>
-        <a href="/kimatu_detail/<%= data.id %>">キャンセル</a>
+        <a href="/kimatu_saki_detail/<%= data.id %>">キャンセル</a>
     </form>
 </body>
 

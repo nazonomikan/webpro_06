@@ -22,7 +22,7 @@
                         <%= row.id %>
                     </td>
                     <td>
-                        <a href="/kimatu_detail/<%= row.id %>">
+                        <a href="/kimatu_saki_detail/<%= row.id %>">
                             <%= row.name %>
                         </a>
                     </td>
@@ -30,15 +30,16 @@
                         <%= row.type %>
                     </td>
                     <td>
-                        <a href="/kimatu_list/edit/<%= row.id %>">編集</a>
-                        <a href="/kimatu_list/delete/<%= row.id %>" onclick="return confirm('削除してもよいですか？');">削除</a>
+                        <a href="/kimatu_saki_list/edit/<%= row.id %>">編集</a>
+                        <a href="/kimatu_saki_list/delete/<%= row.id %>" onclick="return confirm('削除しますか？');">削除</a>
                     </td>
                 </tr>
                 <% number +=1 %>
                     <% } %>
     </table>
-    <a href="/kimatu_new.html">キャラクターを追加する</a><br>
-    <a href="/kimatu_home">ホームに戻る</a>
+    <a href="/kimatu_saki.html">キャラクターを追加する</a><br>
+    <a href="/kimatu_saki_formation">編成へ</a><br>
+    <a href="/kimatu_home">期末課題のホームに戻る</a>
 </body>
 
 </html>

@@ -3,15 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>キャラクターの追加</title>
+    <title>キャラクター追加フォーム</title>
 </head>
 
 <body>
-    <h2>キャラクターを追加する</h2>
-    <form action="/kimatu_add.html">
-        <label for="id">ID:</label>
-        <input type="number" name="id" id="id" min="1" required>
-        <br>
+    <form action="/kimatu_saki_list" method="POST">
 
         <label for="name">名前:</label>
         <input type="text" name="name" id="name" required>
@@ -19,11 +15,11 @@
 
         <label for="type">タイプ:</label>
         <select name="type" id="type">
-            <option value="cute">キュート</option>
-            <option value="cool">クール</option>
-            <option value="mysterious">ミステリアス</option>
-            <option value="happy">ハッピー</option>
-            <option value="pure">ピュア</option>
+            <option value="キュート">キュート</option>
+            <option value="クール">クール</option>
+            <option value="ミステリアス">ミステリアス</option>
+            <option value="ハッピー">ハッピー</option>
+            <option value="ピュア">ピュア</option>
         </select>
         <br>
 
@@ -33,13 +29,14 @@
 
         <label for="skilleffect">スキル効果詳細:</label>
         <select name="skilleffect" id="skilleffect">
-            <option value="nup">純スコ</option>
-            <option value="sup">判定スコ</option>
-            <option value="jud">判定強化</option>
-            <option value="lif">回復</option>
+            <option value="純スコ">純スコ</option>
+            <option value="判定スコ">判定スコ</option>
+            <option value="判定強化">判定強化</option>
+            <option value="スペスキ">スペスキ</option>
+            <option value="回復">回復</option>
         </select>
         <br>
-        
+
         <label for="skilllevel">スキルレベル:</label>
         <input type="number" name="skilllevel" id="skilllevel" min="1" max="4" required>
         <br>
@@ -53,8 +50,5 @@
         <br>
 
         <input type="submit" value="追加">
-    </form>
-    <a href="/kimatu_list">キャラクター一覧に戻る</a>
-</body>
 
 </html>
