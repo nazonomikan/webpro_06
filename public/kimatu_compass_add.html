@@ -4,39 +4,44 @@
 <head>
     <meta charset="utf-8">
     <title>コンパスカード追加フォーム</title>
+    <link rel="stylesheet" href="/kimatu_saki.css">
 </head>
 
-<body>
-    <h1>コンパスカード追加</h1>
-    <form action="/kimatu_compass_list" method="POST">
-        <label>名前: <input type="text" name="name" required></label><br>
-        <label>属性: 
-            <select name="type">
-                <option value="火属性">火属性</option>
-                <option value="水属性">水属性</option>
-                <option value="木属性">木属性</option>
-                <option value="無属性">無属性</option>
-            </select>
-        </label><br>
-        <label>攻撃: <input type="number" name="attack"></label><br>
-        <label>防御: <input type="number" name="defence"></label><br>
-        <label>HP: <input type="number" name="hp"></label><br>
-        <label>クールタイム: <input type="number" name="cool_time"></label><br>
-        <label>攻撃種: 
-            <select name="damage_type">
-                <option value="近距離">近距離</option>
-                <option value="連撃">連撃</option>
-                <option value="遠距離">遠距離</option>
-                <option value="周囲">周囲</option>
-            </select>
-        </label><br>
-        <label>ダメージ: <input type="number" name="damage"></label><br>
-        <label>ダメージ回数: <input type="number" name="damage_count"></label><br>
-        <label>効果:<br>
-            <textarea name="effect" rows="4" cols="40"></textarea>
-        </label><br>
-        <button type="submit">追加</button>
-    </form>
+<body class="blue-theme">
+    <div class="container">
+        <header class="page-header">
+            <h1>コンパスカード追加</h1>
+        </header>
+        <form action="/kimatu_compass_list" method="POST">
+            <label>名前: <input type="text" name="name" required></label><br>
+            <label>属性:
+                <select name="type">
+                    <option value="火属性">火属性</option>
+                    <option value="水属性">水属性</option>
+                    <option value="木属性">木属性</option>
+                    <option value="無属性">無属性</option>
+                </select>
+            </label><br>
+            <label>攻撃: <input type="number" name="attack"></label><br>
+            <label>防御: <input type="number" name="defence"></label><br>
+            <label>HP: <input type="number" name="hp"></label><br>
+            <label>クールタイム: <input type="number" name="cool_time"></label><br>
+            <label>攻撃種:
+                <select name="damage_type">
+                    <option value="近距離">近距離</option>
+                    <option value="連撃">連撃</option>
+                    <option value="遠距離">遠距離</option>
+                    <option value="周囲">周囲</option>
+                </select>
+            </label><br>
+            <label>ダメージ: <input type="number" name="damage"></label><br>
+            <label>ダメージ回数: <input type="number" name="damage_count"></label><br>
+            <label>効果:<br>
+                <textarea name="effect" rows="4" cols="40"></textarea>
+            </label><br>
+            <button class="btn add" type="submit">追加</button>
+        </form>
+    </div>
 </body>
 
 </html>

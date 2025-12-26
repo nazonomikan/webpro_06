@@ -5,68 +5,73 @@
     <meta charset="UTF-8">
     <title>編集 - <%= data.name %>
     </title>
+    <link rel="stylesheet" href="/kimatu_saki.css">
 </head>
 
-<body>
-    <h2>
-        <%= data.name %> を編集
-    </h2>
-    <form method="post" action="/kimatu_compass_list/update/<%= data.id %>">
-        <table>
-            <tr>
-                <td>名前</td>
-                <td><input type="text" name="name" value="<%= data.name %>"></td>
-            </tr>
-            <tr>
-                <td>属性</td>
-                <td><select name="type">
-                    <option value="火属性" <%=data.type==='火属性' ? 'selected' : '' %>>火属性</option>
-                    <option value="水属性" <%=data.type==='水属性' ? 'selected' : '' %>>水属性</option>
-                    <option value="木属性" <%=data.type==='木属性' ? 'selected' : '' %>>木属性</option>
-                    <option value="無属性" <%=data.type==='無属性' ? 'selected' : '' %>>無属性</option>
-                </select></td>
-            </tr>
-            <tr>
-                <td>攻撃</td>
-                <td><input type="number" name="attack" value="<%= data.attack %>"></td>
-            </tr>
-            <tr>
-                <td>防御</td>
-                <td><input type="number" name="defence" value="<%= data.defence %>"></td>
-            </tr>
-            <tr>
-                <td>HP</td>
-                <td><input type="number" name="hp" value="<%= data.hp %>"></td>
-            </tr>
-            <tr>
-                <td>クールタイム</td>
-                <td><input type="number" name="cool_time" value="<%= data.cool_time %>"></td>
-            </tr>
-            <tr>
-                <td>ダメージ種別</td>
-                <td><select name="damage_type">
-                    <option value="近距離" <%=data.damage_type==='近距離' ? 'selected' : '' %>>近距離</option>
-                    <option value="連撃" <%=data.damage_type==='連撃' ? 'selected' : '' %>>連撃</option>
-                    <option value="遠距離" <%=data.damage_type==='遠距離' ? 'selected' : '' %>>遠距離</option>
-                    <option value="周囲" <%=data.damage_type==='周囲' ? 'selected' : '' %>>周囲</option>
-                </select></td>
-            </tr>
-            <tr>
-                <td>ダメージ</td>
-                <td><input type="number" name="damage" value="<%= data.damage %>"></td>
-            </tr>
-            <tr>
-                <td>ダメージ回数</td>
-                <td><input type="number" name="damage_count" value="<%= data.damage_count %>"></td>
-            </tr>
-            <tr>
-                <td>効果</td>
-                <td><textarea name="effect"><%= data.effect %></textarea></td>
-            </tr>
-        </table>
-        <button type="submit">保存</button><br>
-        <a href="/kimatu_compass_detail/<%= data.id %>">キャンセル</a>
-    </form>
+<body class="blue-theme">
+    <div class="container">
+        <header class="page-header">
+            <h2>
+                <%= data.name %> を編集
+            </h2>
+        </header>
+        <form method="post" action="/kimatu_compass_list/update/<%= data.id %>">
+            <table>
+                <tr>
+                    <td>名前</td>
+                    <td><input type="text" name="name" value="<%= data.name %>"></td>
+                </tr>
+                <tr>
+                    <td>属性</td>
+                    <td><select name="type">
+                            <option value="火属性" <%=data.type==='火属性' ? 'selected' : '' %>>火属性</option>
+                            <option value="水属性" <%=data.type==='水属性' ? 'selected' : '' %>>水属性</option>
+                            <option value="木属性" <%=data.type==='木属性' ? 'selected' : '' %>>木属性</option>
+                            <option value="無属性" <%=data.type==='無属性' ? 'selected' : '' %>>無属性</option>
+                        </select></td>
+                </tr>
+                <tr>
+                    <td>攻撃</td>
+                    <td><input type="number" name="attack" value="<%= data.attack %>"></td>
+                </tr>
+                <tr>
+                    <td>防御</td>
+                    <td><input type="number" name="defence" value="<%= data.defence %>"></td>
+                </tr>
+                <tr>
+                    <td>HP</td>
+                    <td><input type="number" name="hp" value="<%= data.hp %>"></td>
+                </tr>
+                <tr>
+                    <td>クールタイム</td>
+                    <td><input type="number" name="cool_time" value="<%= data.cool_time %>"></td>
+                </tr>
+                <tr>
+                    <td>ダメージ種別</td>
+                    <td><select name="damage_type">
+                            <option value="近距離" <%=data.damage_type==='近距離' ? 'selected' : '' %>>近距離</option>
+                            <option value="連撃" <%=data.damage_type==='連撃' ? 'selected' : '' %>>連撃</option>
+                            <option value="遠距離" <%=data.damage_type==='遠距離' ? 'selected' : '' %>>遠距離</option>
+                            <option value="周囲" <%=data.damage_type==='周囲' ? 'selected' : '' %>>周囲</option>
+                        </select></td>
+                </tr>
+                <tr>
+                    <td>ダメージ</td>
+                    <td><input type="number" name="damage" value="<%= data.damage %>"></td>
+                </tr>
+                <tr>
+                    <td>ダメージ回数</td>
+                    <td><input type="number" name="damage_count" value="<%= data.damage_count %>"></td>
+                </tr>
+                <tr>
+                    <td>効果</td>
+                    <td><textarea name="effect"><%= data.effect %></textarea></td>
+                </tr>
+            </table>
+            <button type="submit">保存</button><br>
+            <a class="btn" href="/kimatu_compass_detail/<%= data.id %>">キャンセル</a>
+        </form>
+    </div>
 </body>
 
 </html>

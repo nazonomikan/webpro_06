@@ -4,42 +4,50 @@
 <head>
     <meta charset="utf-8">
     <title>所持キャラ一覧</title>
+    <link rel="stylesheet" href="/kimatu_saki.css">
 </head>
 
-<body>
-    <h2>所持キャラ一覧</h2>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>名前</th>
-            <th>タイプ</th>
-            <th>操作</th>
-        </tr>
-        <% let number=0 %>
-            <% for( let row of data ) { %>
-                <tr>
-                    <td>
-                        <%= row.id %>
-                    </td>
-                    <td>
-                        <a href="/kimatu_saki_detail/<%= row.id %>">
-                            <%= row.name %>
-                        </a>
-                    </td>
-                    <td>
-                        <%= row.type %>
-                    </td>
-                    <td>
-                        <a href="/kimatu_saki_list/edit/<%= row.id %>">編集</a>
-                        <a href="/kimatu_saki_list/delete/<%= row.id %>" onclick="return confirm('削除しますか？');">削除</a>
-                    </td>
-                </tr>
-                <% number +=1 %>
-                    <% } %>
-    </table>
-    <a href="/kimatu_saki_add.html">キャラクターを追加する</a><br>
-    <a href="/kimatu_saki_formation">編成へ</a><br>
-    <a href="/kimatu_home">期末課題のホームに戻る</a>
+<body class="blue-theme">
+    <div class="container">
+        <header class="page-header">
+            <h2>所持キャラ一覧</h2>
+        </header>
+        <table class="saki-table">
+            <tr>
+                <th>ID</th>
+                <th>名前</th>
+                <th>タイプ</th>
+                <th>操作</th>
+            </tr>
+            <% let number=0 %>
+                <% for( let row of data ) { %>
+                    <tr>
+                        <td>
+                            <%= row.id %>
+                        </td>
+                        <td>
+                            <a href="/kimatu_saki_detail/<%= row.id %>">
+                                <%= row.name %>
+                            </a>
+                        </td>
+                        <td>
+                            <%= row.type %>
+                        </td>
+                        <td>
+                            <a class="link edit" href="/kimatu_saki_list/edit/<%= row.id %>">編集</a>
+                            <a class="link delete" href="/kimatu_saki_list/delete/<%= row.id %>"
+                                onclick="return confirm('削除しますか？');">削除</a>
+                        </td>
+                    </tr>
+                    <% number +=1 %>
+                        <% } %>
+        </table>
+        <div class="footer-actions">
+            <a class="btn add" href="/kimatu_saki_add.html">キャラクターを追加する</a>
+            <a class="btn formation" href="/kimatu_saki_formation">編成へ</a>
+            <a class="btn home" href="/kimatu_home">期末課題のホームに戻る</a>
+        </div>
+    </div>
 </body>
 
 </html>

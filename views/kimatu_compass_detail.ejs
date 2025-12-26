@@ -6,86 +6,93 @@
     <title>
         <%= data.name %>
     </title>
+    <link rel="stylesheet" href="/kimatu_saki.css">
 </head>
 
-<body>
-    <h2>
-        <%= data.name %> の詳細
-    </h2>
-    <table>
-        <tr>
-            <th>項目</th>
-            <th>値</th>
-        </tr>
-        <tr>
-            <td>ID</td>
-            <td>
-                <%= data.id %>
-            </td>
-        </tr>
-        <tr>
-            <td>名前</td>
-            <td>
-                <%= data.name %>
-            </td>
-        </tr>
-        <tr>
-            <td>属性</td>
-            <td>
-                <%= data.type %>
-            </td>
-        </tr>
-        <tr>
-            <td>攻撃</td>
-            <td>
-                <%= data.attack %>
-            </td>
-        </tr>
-        <tr>
-            <td>防御</td>
-            <td>
-                <%= data.defence %>
-            </td>
-        </tr>
-        <tr>
-            <td>HP</td>
-            <td>
-                <%= data.hp %>
-            </td>
-        </tr>
-        <tr>
-            <td>クールタイム</td>
-            <td>
-                <%= data.cool_time %>
-            </td>
-        </tr>
-        <tr>
-            <td>ダメージ種別</td>
-            <td>
-                <%= data.damage_type %>
-            </td>
-        </tr>
-        <tr>
-            <td>ダメージ</td>
-            <td>
-                <%= data.damage %>
-            </td>
-        </tr>
-        <tr>
-            <td>ダメージ回数</td>
-            <td>
-                <%= data.damage_count %>
-            </td>
-        </tr>
-        <tr>
-            <td>効果</td>
-            <td>
-                <%= data.effect %>
-            </td>
-        </tr>
-    </table>
-    <a href="/kimatu_compass_list">一覧に戻る</a><br>
-    <a href="/kimatu_compass_list/edit/<%= data.id %>">編集</a>
+<body class="blue-theme">
+    <div class="container">
+        <header class="page-header">
+            <h2>
+                <%= data.name %> の詳細
+            </h2>
+        </header>
+        <table class="saki-table">
+            <tr>
+                <th>項目</th>
+                <th>値</th>
+            </tr>
+            <tr>
+                <td>ID</td>
+                <td>
+                    <%= data.id %>
+                </td>
+            </tr>
+            <tr>
+                <td>名前</td>
+                <td>
+                    <%= data.name %>
+                </td>
+            </tr>
+            <tr>
+                <td>属性</td>
+                <td>
+                    <%= data.type %>
+                </td>
+            </tr>
+            <tr>
+                <td>攻撃</td>
+                <td>
+                    <%= data.attack %>
+                </td>
+            </tr>
+            <tr>
+                <td>防御</td>
+                <td>
+                    <%= data.defence %>
+                </td>
+            </tr>
+            <tr>
+                <td>HP</td>
+                <td>
+                    <%= data.hp %>
+                </td>
+            </tr>
+            <tr>
+                <td>クールタイム</td>
+                <td>
+                    <%= data.cool_time %>
+                </td>
+            </tr>
+            <tr>
+                <td>ダメージ種別</td>
+                <td>
+                    <%= data.damage_type %>
+                </td>
+            </tr>
+            <tr>
+                <td>ダメージ</td>
+                <td>
+                    <%= data.damage %>
+                </td>
+            </tr>
+            <tr>
+                <td>ダメージ回数</td>
+                <td>
+                    <%= data.damage_count %>
+                </td>
+            </tr>
+            <tr>
+                <td>効果</td>
+                <td>
+                    <%= data.effect %>
+                </td>
+            </tr>
+        </table>
+        <div class="footer-actions">
+            <a class="btn" href="/kimatu_compass_list">一覧に戻る</a>
+            <a class="btn edit" href="/kimatu_compass_list/edit/<%= data.id %>">編集</a>
+        </div>
+    </div>
 </body>
 
 </html>

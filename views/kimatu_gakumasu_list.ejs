@@ -4,51 +4,59 @@
 <head>
     <meta charset="utf-8">
     <title>学マスカード一覧</title>
+    <link rel="stylesheet" href="/kimatu_saki.css">
 </head>
 
-<body>
-    <h2>学マスカード一覧</h2>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>名前</th>
-            <th>コスト</th>
-            <th>コスト種別</th>
-            <th>レアリティ</th>
-            <th>解禁レベル</th>
-            <th>操作</th>
-        </tr>
-        <% let number=0 %>
-        <% for( let row of data ) { %>
+<body class="blue-theme">
+    <div class="container">
+        <header class="page-header">
+            <h2>学マスカード一覧</h2>
+        </header>
+        <table class="saki-table">
             <tr>
-                <td>
-                    <%= row.id %>
-                </td>
-                <td><a href="/kimatu_gakumasu_detail/<%= row.id %>">
-                        <%= row.name %>
-                    </a></td>
-                <td>
-                    <%= row.cost %>
-                </td>
-                <td>
-                    <%= row.cost_type %>
-                </td>
-                <td>
-                    <%= row.rarity %>
-                </td>
-                <td>
-                    <%= row.unlock_level %>
-                </td>
-                <td>
-                    <a href="/kimatu_gakumasu_list/edit/<%= row.id %>">編集</a>
-                    <a href="/kimatu_gakumasu_list/delete/<%= row.id %>" onclick="return confirm('削除しますか？');">削除</a>
-                </td>
+                <th>ID</th>
+                <th>名前</th>
+                <th>コスト</th>
+                <th>コスト種別</th>
+                <th>レアリティ</th>
+                <th>解禁レベル</th>
+                <th>操作</th>
             </tr>
-            <% number +=1 %>
-            <% } %>
-    </table>
-    <a href="/kimatu_gakumasu_add.html">カードを追加する</a><br>
-    <a href="/kimatu_home">期末課題のホームに戻る</a>
+            <% let number=0 %>
+                <% for( let row of data ) { %>
+                    <tr>
+                        <td>
+                            <%= row.id %>
+                        </td>
+                        <td><a href="/kimatu_gakumasu_detail/<%= row.id %>">
+                                <%= row.name %>
+                            </a></td>
+                        <td>
+                            <%= row.cost %>
+                        </td>
+                        <td>
+                            <%= row.cost_type %>
+                        </td>
+                        <td>
+                            <%= row.rarity %>
+                        </td>
+                        <td>
+                            <%= row.unlock_level %>
+                        </td>
+                        <td>
+                            <a href="/kimatu_gakumasu_list/edit/<%= row.id %>">編集</a>
+                            <a href="/kimatu_gakumasu_list/delete/<%= row.id %>"
+                                onclick="return confirm('削除しますか？');">削除</a>
+                        </td>
+                    </tr>
+                    <% number +=1 %>
+                        <% } %>
+        </table>
+        <div class="footer-actions">
+            <a class="btn add" href="/kimatu_gakumasu_add.html">カードを追加する</a>
+            <a class="btn home" href="/kimatu_home">期末課題のホームに戻る</a>
+        </div>
+    </div>
 </body>
 
 </html>

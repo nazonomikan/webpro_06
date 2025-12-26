@@ -6,68 +6,75 @@
     <title>
         <%= data.name %>
     </title>
+    <link rel="stylesheet" href="/kimatu_saki.css">
 </head>
 
-<body>
-    <h2>
-        <%= data.name %>の詳細
-    </h2>
-    <table>
-        <tr>
-            <th>項目</th>
-            <th>データ</th>
-        </tr>
-        <tr>
-            <td>ID</td>
-            <td>
-                <%= data.id %>
-            </td>
-        </tr>
-        <tr>
-            <td>名前</td>
-            <td>
-                <%= data.name %>
-            </td>
-        </tr>
-        <tr>
-            <td>タイプ</td>
-            <td>
-                <%= data.type %>
-            </td>
-        </tr>
-        <tr>
-            <td>レアリティ</td>
-            <td>
-                <%= data.rarity %>
-            </td>
-        </tr>
-        <tr>
-            <td>スキル名</td>
-            <td>
-                <%= data.skill_name %>
-            </td>
-        </tr>
-        <tr>
-            <td>スキルレベル</td>
-            <td>
-                <%= data.skill_level %>
-            </td>
-        </tr>
-        <tr>
-            <td>マスターランク</td>
-            <td>
-                <%= data.rank %>
-            </td>
-        </tr>
-        <tr>
-            <td>初期総合力</td>
-            <td>
-                <%= data.total_status %>
-            </td>
-        </tr>
-    </table>
-    <a href="/kimatu_saki_formation">編成へ</a>
-    <a href="/kimatu_saki_list">キャラクター一覧へ</a>
+<body class="blue-theme">
+    <div class="container">
+        <header class="page-header">
+            <h2>
+                <%= data.name %>の詳細
+            </h2>
+        </header>
+        <table class="saki-table">
+            <tr>
+                <th>項目</th>
+                <th>データ</th>
+            </tr>
+            <tr>
+                <td>ID</td>
+                <td>
+                    <%= data.id %>
+                </td>
+            </tr>
+            <tr>
+                <td>名前</td>
+                <td>
+                    <%= data.name %>
+                </td>
+            </tr>
+            <tr>
+                <td>タイプ</td>
+                <td>
+                    <%= data.type %>
+                </td>
+            </tr>
+            <tr>
+                <td>レアリティ</td>
+                <td>
+                    <%= data.rarity %>
+                </td>
+            </tr>
+            <tr>
+                <td>スキル名</td>
+                <td>
+                    <%= data.skill_name %>
+                </td>
+            </tr>
+            <tr>
+                <td>スキルレベル</td>
+                <td>
+                    <%= data.skill_level %>
+                </td>
+            </tr>
+            <tr>
+                <td>マスターランク</td>
+                <td>
+                    <%= data.rank %>
+                </td>
+            </tr>
+            <tr>
+                <td>初期総合力</td>
+                <td>
+                    <%= data.total_status %>
+                </td>
+            </tr>
+        </table>
+        <div class="footer-actions">
+            <a class="btn" href="/kimatu_saki_formation">編成へ</a>
+            <a class="btn" href="/kimatu_saki_list">キャラクター一覧へ</a>
+        </div>
+    </div>
 </body>
 
 </html>
