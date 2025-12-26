@@ -19,7 +19,15 @@
             </tr>
             <tr>
                 <td>タイプ</td>
-                <td><input type="text" name="type" value="<%= data.type %>"></td>
+                <td>
+                    <select name="type">
+                        <option value="ミステリアス" <%=data.type==='ミステリアス' ? 'selected' : '' %>>ミステリアス</option>
+                        <option value="ピュア" <%=data.type==='ピュア' ? 'selected' : '' %>>ピュア</option>
+                        <option value="クール" <%=data.type==='クール' ? 'selected' : '' %>>クール</option>
+                        <option value="ハッピー" <%=data.type==='ハッピー' ? 'selected' : '' %>>ハッピー</option>
+                        <option value="キュート" <%=data.type==='キュート' ? 'selected' : '' %>>キュート</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>レアリティ</td>
@@ -27,7 +35,14 @@
             </tr>
             <tr>
                 <td>スキル名</td>
-                <td><input type="text" name="skill_name" value="<%= data.skill_name %>"></td>
+                <td>
+                    <select name="skill_name">
+                        <option value="純スコ" <%=data.skill_name==='純スコ' ? 'selected' : '' %>>純スコ</option>
+                        <option value="回復" <%=data.skill_name==='回復' ? 'selected' : '' %>>回復</option>
+                        <option value="判定スコ" <%=data.skill_name==='判定スコ' ? 'selected' : '' %>>判定スコ</option>
+                        <option value="判定強化" <%=data.skill_name==='判定強化' ? 'selected' : '' %>>判定強化</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>スキルレベル</td>

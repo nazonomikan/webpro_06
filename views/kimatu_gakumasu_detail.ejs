@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        <%= data.name %>
+    </title>
+</head>
+
+<body>
+    <h2>
+        <%= data.name %> の詳細
+    </h2>
+    <table>
+        <tr>
+            <th>項目</th>
+            <th>値</th>
+        </tr>
+        <tr>
+            <td>ID</td>
+            <td>
+                <%= data.id %>
+            </td>
+        </tr>
+        <tr>
+            <td>名前</td>
+            <td>
+                <%= data.name %>
+            </td>
+        </tr>
+        <tr>
+            <td>コスト</td>
+            <td>
+                <%= data.cost %>
+            </td>
+        </tr>
+        <tr>
+            <td>コスト種別</td>
+            <td>
+                <%= data.cost_type %>
+            </td>
+        </tr>
+        <tr>
+            <td>レアリティ</td>
+            <td>
+                <%= data.rarity %>
+            </td>
+        </tr>
+        <tr>
+            <td>解禁レベル</td>
+            <td>
+                <%= data.unlock_level %>
+            </td>
+        </tr>
+        <tr>
+            <td>効果</td>
+            <td>
+                <%= data.effect %>
+            </td>
+        </tr>
+    </table>
+    <a href="/kimatu_gakumasu_list">一覧に戻る</a>
+    <a href="/kimatu_gakumasu_list/edit/<%= data.id %>">編集</a>
+</body>
+
+</html>

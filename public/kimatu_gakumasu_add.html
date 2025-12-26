@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <title>学マスカード追加フォーム</title>
+</head>
+
+<body>
+    <h1>学マスカード追加</h1>
+    <form action="/kimatu_gakumasu_list" method="POST">
+        <label>名前: <input type="text" name="name" required></label><br>
+        <label>コスト: <input type="number" name="cost" required></label><br>
+        <label>コスト種別:
+            <select name="cost_type">
+                <option value="ノーマル">ノーマル</option>
+                <option value="やる気">やる気</option>
+                <option value="好印象">好印象</option>
+            </select>
+        </label><br>
+        <label>レアリティ:
+            <select name="rarity">
+                <option value="N">N</option>
+                <option value="R">R</option>
+                <option value="SR">SR</option>
+                <option value="SSR">SSR</option>
+            </select>
+        </label><br>
+        <label>解除レベル: <input type="number" name="unlock_level"></label><br>
+        <label>効果:<br>
+            <textarea name="effect" rows="4" cols="40"></textarea>
+        </label><br>
+        <button type="submit">追加</button>
+    </form>
+</body>
+
+</html>

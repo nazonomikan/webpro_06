@@ -257,7 +257,7 @@ app.get("/kimatu_saki_list", (req, res) => {
 
 // Create
 app.get("/kimatu_saki_list/create", (req, res) => {
-  res.redirect('/public/kimatu_saki.html');
+  res.redirect('/public/kimatu_saki_add.html');
 });
 
 // Read
@@ -315,7 +315,7 @@ app.get("/kimatu_saki_list/delete/:id", (req, res) => {
 });
 
 // キャラクター追加
-app.get("/kimatu_saki_new.html", (req, res) => {
+app.get("/kimatu_saki_add.html", (req, res) => {
   let id = saki.length + 1;
   let name = req.query.name;
   let type = req.query.type;
@@ -379,11 +379,203 @@ app.post("/kimatu_saki_formation", (req, res) => {
   saki.forEach(item => {
     const base = Number(item.total_status || 0) + (Number(item.rank || 0) * 600);
     const typePct = typeBonuses[item.type] || 0;
-    const modified = Math.round(base * (1 + typePct + extraBonus) );
+    const modified = Math.round(base * (1 + typePct + extraBonus));
     modifiedMap[item.id] = modified;
   });
   const totalSum = formation.reduce((acc, id) => acc + (modifiedMap[id] || 0), 0);
   res.render('kimatu_saki_formation', { data: saki, formation: formation, totalSum: totalSum, modifiedMap: modifiedMap, typeBonuses: typeBonuses });
+});
+
+let gakumasu = [
+  { id: 1, name: "ラブリーウインク", cost: 5, cost_type: "ノーマル", rarity: "SR", unlock_level: 1, effect: "好印象+5，好印象の80%分パラメータ上昇", },
+  { id: 2, name: "みんな大好き", cost: 2, cost_type: "やる気", rarity: "SR", unlock_level: 34, effect: "好印象の120%分パラメータ上昇，スキルカード使用回数+1", },
+  { id: 3, name: "きらきら紙吹雪", cost: 2, cost_type: "やる気", rarity: "SR", unlock_level: 57, effect: "元気の110%分パラメータ上昇，次のターンスキルカードを2枚引く", },
+  { id: 4, name: "アイドル宣言", cost: 0, cost_type: "ノーマル", rarity: "SR", unlock_level: 23, effect: "スキルカード使用回数+1，スキルカードを2枚引く，消費体力減少1ターン", },
+  { id: 5, name: "オトメゴコロ", cost: 3, cost_type: "やる気", rarity: "SR", unlock_level: 52, effect: "好印象+5，スキルカード使用回数+1，好印象10以上の場合好印象+2", },
+  { id: 6, name: "輝くキミへ", cost: 4, cost_type: "やる気", rarity: "SSR", unlock_level: 50, effect: "スキルカード使用回数+1，以降スキルカード使用時好印象の50%分パラメータ上昇", },
+  { id: 7, name: "私がスター", cost: 1, cost_type: "好印象", rarity: "SSR", unlock_level: 25, effect: "ターン追加+1，スキル使用回数+1，スキルカードを引く", },
+  { id: 8, name: "星屑センセーション", cost: 3, cost_type: "やる気", rarity: "SSR", unlock_level: 30, effect: "好印象+7，スキルカード使用回数+1，スキルカードを引く，好印象が10以上の場合好印象増加量+50%5ターン", },
+  { id: 9, name: "夢色リップ", cost: 4, cost_type: "ノーマル", rarity: "SSR", unlock_level: 64, effect: "元気+2，やる気+5，パラメータ上昇量増加+20%，好印象15以上の場合以降4ターンの間好印象1.1倍", },
+  { id: 10, name: "仕切り直し", cost: 2, cost_type: "ノーマル", rarity: "SSR", unlock_level: 40, effect: "手札を全て入れ替える，消費体力減少4ターン，スキルカード使用回数+1，スキルカードを2枚引く", },
+  { id: 11, name: "究極スマイル", cost: 7, cost_type: "ノーマル", rarity: "レジェンド", unlock_level: 1, effect: "好印象強化+100%，全てのスキルカードの好印象値増加+5，スキルカード使用回数+1", },
+];
+
+// --- gakumasu: 一覧 / 作成 / 詳細 / 編集 / 更新 / 削除 ---
+app.get("/kimatu_gakumasu_list", (req, res) => {
+  res.render('kimatu_gakumasu_list', { data: gakumasu });
+});
+
+// Create 表示（外部HTMLへリダイレクト）
+app.get("/kimatu_gakumasu_list/create", (req, res) => {
+  res.redirect('/public/kimatu_gakumasu_add.html');
+});
+
+// Read (詳細)
+app.get("/kimatu_gakumasu_detail/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const detail = gakumasu.find(item => item.id === id);
+  res.render('kimatu_gakumasu_detail', { data: detail });
+});
+
+// Create 処理 (POST)
+app.post("/kimatu_gakumasu_list", (req, res) => {
+  const id = gakumasu.length + 1;
+  const name = req.body.name;
+  const cost = Number(req.body.cost);
+  const cost_type = req.body.cost_type;
+  const rarity = req.body.rarity;
+  const unlock_level = Number(req.body.unlock_level);
+  const effect = req.body.effect;
+  gakumasu.push({ id: id, name: name, cost: cost, cost_type: cost_type, rarity: rarity, unlock_level: unlock_level, effect: effect });
+  console.log(gakumasu);
+  res.render('kimatu_gakumasu_list', { data: gakumasu });
+});
+
+// Edit 表示
+app.get("/kimatu_gakumasu_list/edit/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const detail = gakumasu.find(item => item.id === id);
+  if (!detail) return res.redirect('/kimatu_gakumasu_list');
+  res.render('kimatu_gakumasu_edit', { data: detail });
+});
+
+// Update 処理
+app.post("/kimatu_gakumasu_list/update/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const index = gakumasu.findIndex(item => item.id === id);
+  if (index === -1) return res.redirect('/kimatu_gakumasu_list');
+  gakumasu[index].name = req.body.name;
+  gakumasu[index].cost = Number(req.body.cost);
+  gakumasu[index].cost_type = req.body.cost_type;
+  gakumasu[index].rarity = req.body.rarity;
+  gakumasu[index].unlock_level = Number(req.body.unlock_level);
+  gakumasu[index].effect = req.body.effect;
+  console.log('updated', gakumasu[index]);
+  res.redirect('/kimatu_gakumasu_list');
+});
+
+// Delete
+app.get("/kimatu_gakumasu_list/delete/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const index = gakumasu.findIndex(item => item.id === id);
+  if (index !== -1) gakumasu.splice(index, 1);
+  res.redirect('/kimatu_gakumasu_list');
+});
+
+// Create via GET query (互換用)
+app.get("/kimatu_gakumasu_add.html", (req, res) => {
+  const id = gakumasu.length + 1;
+  const name = req.query.name;
+  const cost = Number(req.query.cost);
+  const cost_type = req.query.cost_type;
+  const rarity = req.query.rarity;
+  const unlock_level = Number(req.query.unlock_level);
+  const effect = req.query.effect;
+  const newdata = { id: id, name: name, cost: cost, cost_type: cost_type, rarity: rarity, unlock_level: unlock_level, effect: effect };
+  gakumasu.push(newdata);
+  res.render('kimatu_gakumasu_list', { data: gakumasu });
+});
+
+let compass = [
+  { id: 1, name: "[陰実]偽りの中の戯れ", type: "木属性", attack: 243, defence: 48, hp: 2739, cool_time: 30, damage_type: "周囲", damage: 400, damage_count: 1, effect: "周囲の敵にダメージ", },
+  { id: 2, name: "[陰実]HIGHEST", type: "水属性", attack: 293, defence: 145, hp: 1696, cool_time: 36, damage_type: "周囲", damage: 400, damage_count: 1, effect: "周囲の敵にガードブレイク", },
+  { id: 3, name: "[HUNTER×HUNTER]旅立ちと仲間たち", type: "火属性", attack: 299, defence: 98, hp: 1956, cool_time: 27, damage_type: "周囲", damage_count: 1, damage: 350, effect: "周囲の敵にダウン付きダメージ", },
+  { id: 4, name: "[HUNTER×HUNTER]決意と覚悟の拳", type: "無属性", attack: 300, defence: 138, hp: 1760, cool_time: 26, damage_type: "近距離", damage_count: 1, damage: 520, effect: "近距離の敵にガードブレイク", },
+  { id: 5, name: "[チェンソーマン]マキマ", type: "火属性", attack: 299, defence: 98, hp: 1956, cool_time: 32, damage_type: "連撃", damage: 89, damage_count: 10, effect: "近距離の敵に4秒間サイレントの連続ダメージ", },
+  { id: 6, name: "[チェンソーマン]早川アキ", type: "水属性", attack: 286, defence: 79, hp: 2024, cool_time: 28, damage_type: "近距離", damage: 470, damage_count: 1, effect: "近距離の敵にガードブレイク", },
+  { id: 7, name: "[無職転生]すれ違う物語", type: "水属性", attack: 299, defence: 83, hp: 2420, cool_time: 27, damage_type: "周囲", damage: 250, damage_count: 1, effect: "周囲の敵に貫通ダメージ", },
+  { id: 8, name: "[超電磁砲]常盤台の超電磁砲（レールガン）", type: "火属性", attack: 297, defence: 66, hp: 2200, cool_time: 45, damage_type: "遠距離", damage: 30, damage_count: 5, effect: "遠距離の敵を4秒間スタン", },
+  { id: 9, name: "[SAO]旅路の果て", type: "木属性", attack: 299, defence: 98, hp: 2117, cool_time: 36, damage_type: "連撃", damage: 47, damage_count: 10, effect: "近距離の敵に連続貫通ダメージ", },
+  { id: 10, name: "[アニモエスティンギ]ラムレザル", type: "木属性", attack: 299, defence: 98, hp: 2301, cool_time: 22, damage_type: "連撃", damage: 106, damage_count: 10, effect: "近距離の敵に連続ダメージ", },
+  { id: 11, name: "[慈愛の貧乏リッチー]ウィズ", type: "水属性", attack: 292, defence: 91, hp: 2623, cool_time: 32, damage_type: "遠距離", damage: 60, damage_count: 5, effect: "遠距離の敵に貫通ダメージ", },
+  { id: 12, name: "[メイドインアビス]黎明卿", type: "無属性", attack: 297, defence: 88, hp: 2310, cool_time: 18, damage_type: "遠距離", damage: 30, damage_count: 5, effect: "遠距離の敵を10秒間サイレント", },
+];
+// --- compass: 一覧 / 作成 / 詳細 / 編集 / 更新 / 削除 ---
+app.get("/kimatu_compass_list", (req, res) => {
+  res.render('kimatu_compass_list', { data: compass });
+});
+
+// Create 表示（外部HTMLへリダイレクト）
+app.get("/kimatu_compass_list/create", (req, res) => {
+  res.redirect('/public/kimatu_compass.html');
+});
+
+// Read (詳細)
+app.get("/kimatu_compass_detail/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const detail = compass.find(item => item.id === id);
+  res.render('kimatu_compass_detail', { data: detail });
+});
+
+// Create 処理 (POST)
+app.post("/kimatu_compass_list", (req, res) => {
+  const id = compass.length + 1;
+  const name = req.body.name;
+  const type = req.body.type;
+  const attack = Number(req.body.attack);
+  const defence = Number(req.body.defence);
+  const hp = Number(req.body.hp);
+  const cool_time = Number(req.body.cool_time);
+  const damage_type = req.body.damage_type;
+  const damage = Number(req.body.damage);
+  const damage_count = Number(req.body.damage_count);
+  const effect = req.body.effect;
+  compass.push({ id: id, name: name, type: type, attack: attack, defence: defence, hp: hp, cool_time: cool_time, damage_type: damage_type, damage: damage, damage_count: damage_count, effect: effect });
+  console.log(compass);
+  res.render('compass_list', { data: compass });
+});
+
+// Edit 表示
+app.get("/kimatu_compass_list/edit/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const detail = compass.find(item => item.id === id);
+  if (!detail) return res.redirect('/kimatu_compass_list');
+  res.render('kimatu_compass_edit', { data: detail });
+});
+
+// Update 処理
+app.post("/kimatu_compass_list/update/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const index = compass.findIndex(item => item.id === id);
+  if (index === -1) return res.redirect('/kimatu_compass_list');
+  compass[index].name = req.body.name;
+  compass[index].type = req.body.type;
+  compass[index].attack = Number(req.body.attack);
+  compass[index].defence = Number(req.body.defence);
+  compass[index].hp = Number(req.body.hp);
+  compass[index].cool_time = Number(req.body.cool_time);
+  compass[index].damage_type = req.body.damage_type;
+  compass[index].damage = Number(req.body.damage);
+  compass[index].damage_count = Number(req.body.damage_count);
+  compass[index].effect = req.body.effect;
+  console.log('updated', compass[index]);
+  res.redirect('/compass_list');
+});
+
+// Delete
+app.get("/compass_list/delete/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const index = compass.findIndex(item => item.id === id);
+  if (index !== -1) compass.splice(index, 1);
+  res.redirect('/kimatu_compass_list');
+});
+
+// Create via GET query (互換用)
+app.get("/kimatu_compass_add.html", (req, res) => {
+  const id = compass.length + 1;
+  const name = req.query.name;
+  const type = req.query.type;
+  const attack = Number(req.query.attack);
+  const defence = Number(req.query.defence);
+  const hp = Number(req.query.hp);
+  const cool_time = Number(req.query.cool_time);
+  const damage_type = req.query.damage_type;
+  const damage = Number(req.query.damage);
+  const damage_count = Number(req.query.damage_count);
+  const effect = req.query.effect;
+  const newdata = { id: id, name: name, type: type, attack: attack, defence: defence, hp: hp, cool_time: cool_time, damage_type: damage_type, damage: damage, damage_count: damage_count, effect: effect };
+  compass.push(newdata);
+  res.render('kimatu_compass_list', { data: compass });
 });
 
 const PORT = process.env.PORT || 8080;
