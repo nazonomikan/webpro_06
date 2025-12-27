@@ -72,6 +72,9 @@
         </table>
         <div class="footer-actions">
             <a class="btn" href="/kimatu_saki_formation">編成へ</a>
+            <a class="btn" href="/kimatu_saki_list/edit/<%= data.id %>">編集</a>
+            <a class="btn" href="/kimatu_saki_list/delete/<%= data.id %>"
+                onclick="return confirm('本当に削除しますか？');">削除</a>
             <a class="btn" href="/kimatu_saki_list">キャラクター一覧へ</a>
         </div>
     </div>

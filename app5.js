@@ -303,7 +303,7 @@ app.post("/kimatu_saki_list/update/:id", (req, res) => {
   saki[index].rank = Number(req.body.rank);
   saki[index].total_status = Number(req.body.total_status);
   console.log('updated', saki[index]);
-  res.redirect('/kimatu_saki_list');
+  res.redirect('/kimatu_saki_detail/' + id);
 });
 
 // Delete
