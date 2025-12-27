@@ -490,7 +490,7 @@ let compass = [
   { id: 11, name: "[慈愛の貧乏リッチー]ウィズ", type: "水属性", attack: 292, defence: 91, hp: 2623, cool_time: 32, damage_type: "遠距離", damage: 60, damage_count: 5, effect: "遠距離の敵に貫通ダメージ", },
   { id: 12, name: "[メイドインアビス]黎明卿", type: "無属性", attack: 297, defence: 88, hp: 2310, cool_time: 18, damage_type: "遠距離", damage: 30, damage_count: 5, effect: "遠距離の敵を10秒間サイレント", },
 ];
-// 所持コンパス一覧
+// 所持コンパスカード一覧
 app.get("/kimatu_compass_list", (req, res) => {
   res.render('kimatu_compass_list', { data: compass });
 });
@@ -507,7 +507,7 @@ app.get("/kimatu_compass_detail/:id", (req, res) => {
   res.render('kimatu_compass_detail', { data: detail });
 });
 
-// Create 処理 (POST)
+// Create(POST)
 app.post("/kimatu_compass_list", (req, res) => {
   const id = compass.length + 1;
   const name = req.body.name;
