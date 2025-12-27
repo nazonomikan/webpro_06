@@ -44,8 +44,8 @@
                             <%= row.unlock_level %>
                         </td>
                         <td>
-                            <a href="/kimatu_gakumasu_list/edit/<%= row.id %>">編集</a>
-                            <a href="/kimatu_gakumasu_list/delete/<%= row.id %>"
+                            <a class="link edit" href="/kimatu_gakumasu_list/edit/<%= row.id %>">編集</a>
+                            <a class="link delete" href="/kimatu_gakumasu_list/delete/<%= row.id %>"
                                 onclick="return confirm('削除しますか？');">削除</a>
                         </td>
                     </tr>

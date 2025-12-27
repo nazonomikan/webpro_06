@@ -12,6 +12,10 @@ flowchart TD
   A -->|削除する| G[削除処理: GET /kimatu_gakumasu_list/delete/:id]
   G -->|削除完了| A
 
+  A -->|編集へ| E
+  E -->|変更をキャンセル| A
+  D -->|削除する| G
+
   A -->|互換作成（GET）| H[作成互換: /kimatu_gakumasu_add.html]
   H -->|一覧を表示| A
 ```

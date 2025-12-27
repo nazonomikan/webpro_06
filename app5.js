@@ -400,12 +400,12 @@ let gakumasu = [
   { id: 11, name: "究極スマイル", cost: 7, cost_type: "ノーマル", rarity: "レジェンド", unlock_level: 1, effect: "好印象強化+100%，全てのスキルカードの好印象値増加+5，スキルカード使用回数+1", },
 ];
 
-// --- gakumasu: 一覧 / 作成 / 詳細 / 編集 / 更新 / 削除 ---
+// 所持学マス一覧
 app.get("/kimatu_gakumasu_list", (req, res) => {
   res.render('kimatu_gakumasu_list', { data: gakumasu });
 });
 
-// Create 表示（外部HTMLへリダイレクト）
+// Create
 app.get("/kimatu_gakumasu_list/create", (req, res) => {
   res.redirect('/public/kimatu_gakumasu_add.html');
 });
@@ -462,7 +462,7 @@ app.get("/kimatu_gakumasu_list/delete/:id", (req, res) => {
   res.redirect('/kimatu_gakumasu_list');
 });
 
-// Create via GET query (互換用)
+// Create via GET query互換用
 app.get("/kimatu_gakumasu_add.html", (req, res) => {
   const id = gakumasu.length + 1;
   const name = req.query.name;
@@ -490,12 +490,12 @@ let compass = [
   { id: 11, name: "[慈愛の貧乏リッチー]ウィズ", type: "水属性", attack: 292, defence: 91, hp: 2623, cool_time: 32, damage_type: "遠距離", damage: 60, damage_count: 5, effect: "遠距離の敵に貫通ダメージ", },
   { id: 12, name: "[メイドインアビス]黎明卿", type: "無属性", attack: 297, defence: 88, hp: 2310, cool_time: 18, damage_type: "遠距離", damage: 30, damage_count: 5, effect: "遠距離の敵を10秒間サイレント", },
 ];
-// --- compass: 一覧 / 作成 / 詳細 / 編集 / 更新 / 削除 ---
+// 所持コンパス一覧
 app.get("/kimatu_compass_list", (req, res) => {
   res.render('kimatu_compass_list', { data: compass });
 });
 
-// Create 表示（外部HTMLへリダイレクト）
+// Create
 app.get("/kimatu_compass_list/create", (req, res) => {
   res.redirect('/public/kimatu_compass.html');
 });
@@ -522,14 +522,14 @@ app.post("/kimatu_compass_list", (req, res) => {
   const effect = req.body.effect;
   compass.push({ id: id, name: name, type: type, attack: attack, defence: defence, hp: hp, cool_time: cool_time, damage_type: damage_type, damage: damage, damage_count: damage_count, effect: effect });
   console.log(compass);
-  res.render('compass_list', { data: compass });
+  res.render('kimatu_compass_list', { data: compass });
 });
 
 // Edit 表示
 app.get("/kimatu_compass_list/edit/:id", (req, res) => {
   const id = Number(req.params.id);
   const detail = compass.find(item => item.id === id);
-  if (!detail) return res.redirect('/kimatu_compass_list');
+  if (!detail) return res.redirect('/kimatu_compass_detail/' + id);
   res.render('kimatu_compass_edit', { data: detail });
 });
 
@@ -549,18 +549,18 @@ app.post("/kimatu_compass_list/update/:id", (req, res) => {
   compass[index].damage_count = Number(req.body.damage_count);
   compass[index].effect = req.body.effect;
   console.log('updated', compass[index]);
-  res.redirect('/compass_list');
+  res.redirect('/kimatu_compass_list');
 });
 
 // Delete
-app.get("/compass_list/delete/:id", (req, res) => {
+app.get("/kimatu_compass_list/delete/:id", (req, res) => {
   const id = Number(req.params.id);
   const index = compass.findIndex(item => item.id === id);
   if (index !== -1) compass.splice(index, 1);
   res.redirect('/kimatu_compass_list');
 });
 
-// Create via GET query (互換用)
+// Create via GET query 互換用
 app.get("/kimatu_compass_add.html", (req, res) => {
   const id = compass.length + 1;
   const name = req.query.name;
