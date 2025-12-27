@@ -36,12 +36,12 @@
 サーバ起動は`npm install`で依存をインストール後，`node app5.js`で行うことでできる．
 
 \subsubsection{目的}
-本システムの目的は，「プロジェクトセカイ カラフルステージ！feat. 初音ミク」に登場するキャラクターのうちの一人である「天馬咲希」の所持カードを閲覧・管理し，
+本アプリケーションの目的は，「プロジェクトセカイ カラフルステージ！feat. 初音ミク」に登場するキャラクターのうちの一人である「天馬咲希」の所持カードを閲覧・管理し，
 さらに，実際のゲーム内での編成の参考にすることができるようにすることである．
 
 \subsubsection{機能詳細}
-本システムの機能の詳細について説明する．
-本システムでは，「プロジェクトセカイ カラフルステージ！feat. 初音ミク」に登場するキャラクターのうちの一人である「天馬咲希」の所持カードの一覧表示，詳細表示，追加，編集，削除機能を使用できる．
+本アプリケーションの機能の詳細について説明する．
+本アプリケーションでは，「プロジェクトセカイ カラフルステージ！feat. 初音ミク」に登場するキャラクターのうちの一人である「天馬咲希」の所持カードの一覧表示，詳細表示，追加，編集，削除機能を使用できる．
 さらに，編成画面にて，所持しているカードの中から最大5枚を選択し，編成の総合力を計算することができる．
 
 \subsubsection{データ構造}
@@ -49,7 +49,7 @@ app1では，カードデータを'app5.js'内のメモリ上の配列`saki`で�
 代表的なフィールドは以下の表\ref{tab:saki_fields}の通りである．
 \begin{table}[H]
 \centering
-\caption{`saki`配列の代表フィールド}
+\caption{'saki'配列の代表フィールド}
 \label{tab:saki_fields}
 \begin{tabular}{|l|l|}
 \hline
@@ -66,14 +66,14 @@ total\_status & カードの初期総合力（数値） \\\hline
 \end{table}
 
 \subsubsection{ページ構造とHTTPメソッドとリソース名}
-本データのページ構造，また，対応するメソッドについて図\ref{fig:page_structure_app1}を用いて説明する．
+本アプリケーションのページ構造，また，対応するメソッドについて図\ref{fig:page_structure_app1}を用いて説明する．
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{./figs/saki.png}
 \caption{app1:kimatu\_sakiのページ構造}
 \label{fig:page_structure_app1}
 \end{figure}
-本システムの起点となるホームページは\texttt{/kimatu\_saki\_list}であり，ここから各機能へ遷移する．
+本アプリケーションの起点となるホームページは\texttt{/kimatu\_saki\_list}であり，ここから各機能へ遷移する．
 一覧表示からは，詳細表示，編集，削除，追加フォーム，編成画面へ遷移できる．
 詳細表示からは，編集，削除，編成画面へ遷移できる．
 編集ページからは，更新処理を経て，編集内容を確認するために詳細表示へ遷移する．
@@ -132,7 +132,7 @@ GET/POST & /kimatu\_saki\_formation & 編成画面表示/保存 \\\hline
 \end{table}
 
 \subsubsection{授業外使用技術について}
-本節では，授業で扱わなかったが本システムで採用した技術とその採用理由について説明する．
+本節では，授業で扱わなかったが本アプリケーションで採用した技術とその採用理由について説明する．
 \paragraph{総合力計算方法}
 編成画面で選択された各カードの \texttt{total\_status} に対して，カードの \texttt{rank} に基づくランク補正（コード中では実際の増加量を参考に \texttt{rank * 600} としている），
 タイプごとのボーナス，および定数による増幅を順次適用して合計値を算出する手法を採用した．
@@ -149,135 +149,303 @@ GET/POST & /kimatu\_saki\_formation & 編成画面表示/保存 \\\hline
 
 \subsection{app2:kimatu\_gakumasu}
 \subsubsection{システム構成}
-構成は app1 と同様に Node.js / Express / EJS を採用している。カード（学マス）管理用の CRUD をメモリ配列で実装している。
+本アプリケーションは，app1と同様にNode.js，Expressを用いたサーバアプリケーションであり，テンプレートにEJS，静的資産に'public/'を使用する．
+サーバ実装は'app5.js'にまとめており，ビューは'views/'，静的ファイルは'public/'に配置している．
+サーバ起動は`npm install`で依存をインストール後，`node app5.js`で行うことでできる．
+
 \subsubsection{目的}
-学マスカードの一覧管理（作成・編集・削除・詳細表示）を行うための簡易管理ツール。
+本アプリケーションの目的は，学園アイドルマスターのプロデュース中に登場するカードの一部を確認し，管理することで，プロデュース中の参考にすることができるようにすることである．
+
 \subsubsection{機能詳細}
-主な機能:
-\begin{itemize}
-	\item 一覧 \texttt{/kimatu\_gakumasu\_list}（\texttt{views/kimatu\_gakumasu\_list.ejs}）
-	\item 詳細 \texttt{/kimatu\_gakumasu\_detail/:id}（\texttt{views/kimatu\_gakumasu\_detail.ejs}）
-	\item 追加フォーム \texttt{public/kimatu\_gakumasu\_add.html} と POST \texttt{/kimatu\_gakumasu\_list}
-	\item 編集 \texttt{/kimatu\_gakumasu\_list/edit/:id} と更新 POST \texttt{/kimatu\_gakumasu\_list/update/:id}
-	\item 削除 \texttt{/kimatu\_gakumasu\_list/delete/:id}
-\end{itemize}
+本アプリケーションの機能の詳細について説明する．
+本アプリケーションでは，学園アイドルマスターのプロデュース中に登場するカードの一部の一覧表示，詳細表示，追加，編集，削除機能を使用できる．
+
 \subsubsection{データ構造}
-メモリ上の配列 `gakumasu`。代表フィールド:
-\begin{itemize}
-	\item `id`, `name`, `cost`, `cost\_type`, `rarity`, `unlock\_level`, `effect`
-\end{itemize}
-\subsubsection{ページ構造}
-代表ファイル:
-\begin{itemize}
-	\item \texttt{views/kimatu\_gakumasu\_list.ejs}, \texttt{views/kimatu\_gakumasu\_detail.ejs}, \texttt{views/kimatu\_gakumasu\_edit.ejs}
-	\item 追加フォーム: \texttt{public/kimatu\_gakumasu\_add.html}
-\end{itemize}
-\subsubsection{HTTPメソッドとリソース名}
-主要エンドポイントは app1 と同様な REST 風の CRUD（GET 一覧/詳細，POST 作成/更新，GET 削除）を採用している。
+app2では，学マスのカードデータを'app5.js'内のメモリ上の配列'gakumasu'で管理している．
+代表的なフィールドは以下の表\ref{tab:gakumasu_fields}の通りである．
+\begin{table}[H]
+\centering
+\caption{'gakumasu'配列の代表フィールド}
+\label{tab:gakumasu_fields}
+\begin{tabular}{|l|l|}
+\hline
+項目名 & 詳細説明 \\\hline
+id & カードの識別子，内部管理をするために使用している（数値） \\\hline
+name & カード名（文字列） \\\hline
+cost & カードのコスト（数値） \\\hline
+cost\_type & コストタイプ（文字列）（ノーマル，やる気，好印象） \\\hline
+rarity & レアリティ（文字列）（SR，SSR，レジェンド） \\\hline
+unlock\_level & カードの解放レベル（数値）（1〜） \\\hline
+effect & カードの効果（文字列） \\\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{ページ構造とHTTPメソッドとリソース名}
+本アプリケーションのページ構造，また，対応するメソッドについて図\ref{fig:page_structure_app2}を用いて説明する．
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{./figs/gakumasu.png}
+\caption{app2:kimatu\_gakumasuのページ構造}
+\label{fig:page_structure_app2}
+\end{figure}
+本アプリケーションの起点となるホームページは\texttt{/kimatu\_gakumasu\_list}であり，ここから各機能へ遷移する．
+一覧表示からは，詳細表示，編集，削除，追加フォームへ遷移できる．
+詳細表示からは，編集，削除へ遷移できる．
+編集ページからは，更新処理を経て，編集内容を確認するために詳細表示へ遷移する．
+削除，追加フォームからは，それぞれ削除処理，追加処理を経て一覧表示へ遷移する．
+
 \subsubsection{リソース名ごとの機能の詳細}
-各エンドポイントはメモリ配列操作を行い，変更後は一覧表示にリダイレクトまたはレンダリングする簡易実装である。
-\subsubsection{ページ遷移}
+各エンドポイントの機能の詳細について説明する．
+主なエンドポイントの機能は，表\ref{tab:app2_resource}の通りである．
+\begin{table}[H]
+\centering
+\caption{app2:kimatu\_gakumasuのリソース名ごとの機能詳細}
+\label{tab:app2_resource}
+\begin{tabular}{|l|p{0.6\textwidth}|}\hline
+リソース名 & 機能詳細 \\\hline
+/kimatu\_gakumasu\_list & gakumasu配列をEJSに渡して一覧を描画する． \\\hline
+/kimatu\_gakumasu\_detail/:id & 指定idのオブジェクトを検索して詳細を表示． \\\hline
+/kimatu\_gakumasu\_list (POST) & フォームから送られた値を受け取り，メモリ配列を更新する（DBは未使用）． \\\hline
+/kimatu\_gakumasu\_list/edit/:id & 指定idのオブジェクトを検索して編集フォームを表示． \\\hline
+/kimatu\_gakumasu\_list/update/:id & フォームから送られた値を受け取り，メモリ配列を更新する（DBは未使用）． \\\hline
+/kimatu\_gakumasu\_list/delete/:id & 指定idのオブジェクトを検索してメモリ配列から削除する（DBは未使用）． \\\hline
+\end{tabular}
+\end{table}
 
 \subsubsection{授業外使用技術について}
+本節では，授業で扱わなかったが本アプリケーションで採用した技術とその採用理由について説明する．
+\paragraph{CSS(見た目・UI)}
+レイアウトには'display:flex'を多用し，カード表示はカード型の横並び（フレックスコンテナ）で実装した．
+また，カードのホバー時に'transition'を用いた軽い浮き上がりアニメーションの付与を行っている．
+理由は，視覚的に整理することで目的の項目が見つけやすくなること，および小さなアニメーションで操作のフィードバックを与えることで視認性と利便性が向上すると判断したためである．
 
 \subsection{app3:kimatu\_compass}
 \subsubsection{システム構成}
-構成は app1/app2 と同様。コンパスカード（スキルカード）を管理する CRUD 機能を提供する。
+本アプリケーションは，app1，app2と同様にNode.js，Expressを用いたサーバアプリケーションであり，テンプレートにEJS，静的資産に'public/'を使用する．
+サーバ実装は'app5.js'にまとめており，ビューは'views/'，静的ファイルは'public/'に配置している．
+サーバ起動は`npm install`で依存をインストール後，`node app5.js`で行うことでできる．
+
 \subsubsection{目的}
-コンパスカード（攻撃/防御/HP/CT 等を持つカード）の登録・編集・表示を行う。
+本アプリケーションは，「コンパス 戦闘摂理解析システム」におけるカード情報の一部を確認し，管理することで，ゲームプレイの参考にすることができるようにすることである．
+
 \subsubsection{機能詳細}
-主な機能:
-\begin{itemize}
-	\item 一覧 \texttt{/kimatu\_compass\_list}（\texttt{views/kimatu\_compass\_list.ejs}）
-	\item 詳細 \texttt{/kimatu\_compass\_detail/:id}（\texttt{views/kimatu\_compass\_detail.ejs}）
-	\item 追加フォーム \texttt{public/kimatu\_compass\_add.html} と POST \texttt{/kimatu\_compass\_list}
-	\item 編集 \texttt{/kimatu\_compass\_list/edit/:id} と更新 POST \texttt{/kimatu\_compass\_list/update/:id}
-	\item 削除 \texttt{/compass\_list/delete/:id}（実装上のパス注意：一部ルート名が統一されていない）
-\end{itemize}
+本アプリケーションの機能の詳細について説明する．
+本アプリケーションでは，「コンパス 戦闘摂理解析システム」に登場するカードの一部の一覧表示，詳細表示，追加，編集，削除機能を使用できる．
+
 \subsubsection{データ構造}
-配列 `compass`。代表フィールド:
-\begin{itemize}
-	\item `id`, `name`, `type`, `attack`, `defence`, `hp`, `cool\_time`, `damage\_type`, `damage`, `damage\_count`, `effect`
-\end{itemize}
-\subsubsection{ページ構造}
-代表ファイル: \texttt{views/kimatu\_compass\_list.ejs}, \texttt{views/kimatu\_compass\_detail.ejs}, \texttt{views/kimatu\_compass\_edit.ejs}, \texttt{public/kimatu\_compass\_add.html}。
-\subsubsection{HTTPメソッドとリソース名}
+app3では，コンパスのカードデータを'app5.js'内のメモリ上の配列 `compass`で管理している．
+代表的なフィールドは以下の表\ref{tab:compass_fields}の通りである．
+\begin{table}[H]
+\centering
+\caption{'compass'配列の代表フィールド}
+\label{tab:compass_fields}
+\begin{tabular}{|l|l|}
+\hline
+項目名 & 詳細説明 \\\hline
+id & カードの識別子，内部管理をするために使用している（数値） \\\hline
+name & カード名（文字列） \\\hline
+type & カードの属性（文字列）（火属性，水属性，木属性，無属性） \\\hline
+attack & 攻撃力（数値） \\\hline
+defence & 防御力（数値） \\\hline
+hp & 体力（数値） \\\hline
+cool\_time & クールダウン（数値） \\\hline
+damage\_type & ダメージタイプ（文字列）（近距離，遠距離，連撃，周囲） \\\hline
+damage & ダメージ量（\%）（数値） \\\hline
+damage\_count & ダメージ回数（数値） \\\hline
+effect & 効果（文字列） \\\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{ページ構造とHTTPメソッドとリソース名}
+本アプリケーションのページ構造，また，対応するメソッドについて図\ref{fig:page_structure_app3}を用いて説明する．
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{./figs/compass.png}
+\caption{app3:kimatu\_compassのページ構造}
+\label{fig:page_structure_app3}
+\end{figure}
+本アプリケーションの起点となるホームページは\texttt{/kimatu\_compass\_list}であり，ここから各機能へ遷移する．
+一覧表示からは，詳細表示，編集，削除，追加フォームへ遷移できる．
+詳細表示からは，編集，削除へ遷移できる．
+編集ページからは，更新処理を経て，編集内容を確認するために詳細表示へ遷移する．
+削除，追加フォームからは，それぞれ削除処理，追加処理を経て一覧表示へ遷移する．
 
 \subsubsection{リソース名ごとの機能の詳細}
-
-\subsubsection{ページ遷移}
+各エンドポイントの機能の詳細について説明する．
+主なエンドポイントの機能は，表\ref{tab:app3_resource}の通りである．
+\begin{table}[H]
+\centering
+\caption{app3:kimatu\_compassのリソース名ごとの機能詳細}
+\label{tab:app3_resource}
+\begin{tabular}{|l|p{0.6\textwidth}|}\hline
+リソース名 & 機能詳細 \\\hline
+/kimatu\_compass\_list & compass配列をEJSに渡して一覧を描画する． \\\hline
+/kimatu\_compass\_detail/:id & 指定idのオブジェクトを検索して詳細を表示． \\\hline
+/kimatu\_compass\_list (POST) & フォームから送られた値を受け取り，メモリ配列を更新する（DBは未使用）． \\\hline
+/kimatu\_compass\_list/edit/:id & 指定idのオブジェクトを検索して編集フォームを表示． \\\hline
+/kimatu\_compass\_list/update/:id & フォームから送られた値を受け取り，メモリ配列を更新する（DBは未使用）． \\\hline
+/kimatu\_compass\_list/delete/:id & 指定idのオブジェクトを検索してメモリ配列から削除する（DBは未使用）． \\\hline
+\end{tabular}
+\end{table}
 
 \subsubsection{授業外使用技術について}
+本節では，授業で扱わなかったが本アプリケーションで採用した技術とその採用理由について説明する．
+\paragraph{CSS(見た目・UI)}
+レイアウトには'display:flex'を多用し，カード表示はカード型の横並び（フレックスコンテナ）で実装した．
+また，カードのホバー時に'transition'を用いた軽い浮き上がりアニメーションの付与を行っている．
+理由は，視覚的に整理することで目的の項目が見つけやすくなること，および小さなアニメーションで操作のフィードバックを与えることで視認性と利便性が向上すると判断したためである．
 
 \section{管理者向け仕様書}
 本節では，管理者向けに各webアプリケーションのインストールから起動までの手順，不具合情報について説明する．
 また，ここでは，代表であるapp1:kimatu\_sakiについて説明する．
 app2,app3についても同様の手順でインストール，起動が可能であるが，一部機能は実施していないため，注意が必要である．
 しかし，app2とapp3は双方ともにシステム構成や使用技術は同じである．
-\subsection{インストールから起動までの手順}
 
+\subsection{目的}
+本アプリケーション群の管理者向けに，インストールから起動までの手順，不具合情報を提供することで，円滑な運用を支援することを目的とする．
+
+\subsection{本アプリケーションの流れ}
+本アプリケーションの遷移の流れについて図\ref{fig:kanri}を用いて説明する．
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{./figs/kanri.png}
+\caption{管理者向け仕様書:アプリケーションの流れ}
+\label{fig:kanri}
+\end{figure}
+
+図\ref{fig:kanri}に示すように，本アプリケーションは，ホームページから各一覧ページへ遷移し，そこから詳細表示，編集，削除，追加フォームへ遷移することができる．
+図はapp1:kimatu\_sakiを例に示しているが，app2,app3も同様の流れである．
+しかし，app2,app3については，編成画面の機能は実装していないため，編成，編成保存は存在しない．
+一覧ページから，各データの名前をクリックすることで，詳細表示へ遷移することができる．
+詳細表示ページからは，編集，削除へ遷移することができる．
+また，編集，削除は一覧ページからも遷移することができる．
+編集ページからは，更新処理を経て，編集内容を確認するために詳細表示へ遷移する．
+削除，追加フォームからは，それぞれ削除処理，追加処理を経て一覧表示へ遷移する．
+ここまでの流れはapp1,app2,app3で共通である．
+app1:kimatu\_sakiについては，編成画面が存在し，編成画面からは，選択したカードの編成を保存し，一覧表示または詳細表示へ遷移できる．
+また，編成画面では，選択中のカードの総合力を計算し，表示する機能も存在する．
+
+\subsection{インストールから起動までの手順}
 \subsubsection{インストール方法}
-前提: Node.js がインストールされていること。
-リポジトリのルートで依存をインストールする:
+ここでは，本アプリケーション群のインストール方法について説明する．
+運用環境はMacBookProでの利用を想定している．
+まず，本稿の冒頭で示したGitHubリンクより"webpro\_06"のリポジトリをダウンロードする．
+続いて，ターミナルを開き，リポジトリのルートディレクトリに移動する．
+次に，依存パッケージのインストールを行うため，以下のソースコードを実行する．
 \begin{verbatim}
 npm install
 \end{verbatim}
 
-（`package.json` が存在する場合は `npm install` で必要パッケージが入る。なければ `npm install express ejs` を手動で行う）
-\subsubsection{起動方法}
-サーバ起動コマンド:
+次に，以下のソースコードを実行し，サーバーを起動する．
 \begin{verbatim}
-PORT=8080 node app5.js
+npm start
 \end{verbatim}
-または単に \texttt{node app5.js}（\texttt{PORT} 環境変数が未指定の場合は \texttt{8080} が使われる）。ブラウザで \url{http://localhost:8080/kimatu_home} を開く。
-\subsubsection{起動できない場合}
-よくある原因:
-\begin{itemize}
-	\item Node.js が未インストール
-	\item ポートが既に使用中（別プロセスが 8080 を使用）
-	\item 必要モジュールが未インストール（`express` など）
-\end{itemize}
 
-対処法: `node -v` を確認し，`npm install` を再実行。ポート競合は別ポートを指定して起動するか既存プロセスを停止する。
-\subsection{終了方法}
-実行中のターミナルで `Ctrl+C` を押す。
-\subsection{分かっている不具合}
-既知の欠点／注意点:
+エラーが出力されなければ，サーバーの起動は成功である．
+これにより，ブラウザで \url{http://localhost:8080/kimatu_home} を開くことで，本アプリケーション群を利用できる．
+また，停止したい際は，実行中のターミナルで「Ctrl+C」を押すことで停止できる．
+本アプリケーション群についてとして，1つ目一覧はプロセカ，2つ目一覧は学マス，3つ目一覧はコンパスのデータを管理することができる．
+
+\subsubsection{想定しうる不具合について}
+インストール時に想定しうる不具合として，以下のものがある．
 \begin{itemize}
-	\item データはメモリ上に保持しており，サーバ再起動で消える（永続化なし）。
-	\item 入力値のバリデーションが最小限であり，不正データの送信を想定していない。
-	\item ルート名に若干の不整合（例: コンパス削除のパス名が \texttt{/compass\_list/delete/:id} で，その他が \texttt{kimatu\_compass\_list} ベースになっている箇所がある）。
-	\item 削除処理が GET で行われているため，意図しないアクセスでデータが消える可能性がある。
+	\item Node.jsがインストールされていない場合，`npm install`コマンドが失敗する可能性がある．
+	\item 依存パッケージのインストール中にネットワークエラーが発生する可能性がある．
+	\item ポート8080が既に使用されている場合，サーバーの起動に失敗する可能性がある．
 \end{itemize}
+対処法として，Node.jsがインストールされていない場合は，公式サイトからインストールを行う．
+依存パッケージのインストール中にネットワークエラーが発生した場合は，ネットワーク接続を確認し，再度`npm install`コマンドを実行する．
+ポート8080が既に使用されている場合は，別のポート番号を指定してサーバーを起動するか，既存のプロセスを停止する．
+また，ダウンロードしたリポジトリに不備(起動できないならpackage.jsonの不備など)がある場合は，再度GitHubから最新のリポジトリをダウンロードする．
+さらに，データはサーバのメモリ内にあるためサーバ停止で消失してしまう．永続化が必要な場合はデータベース導入が必要となるため，注意が必要である．
+
 \section{利用者向け仕様書}
-本節では，利用者向けに各webアプリケーションの概要，使用できる機能について説明する．
-また，ここでは，代表であるapp1:kimatu\_sakiについて説明する．
-app2,app3についても同様の手順で利用が可能であるが，一部機能は実施していないため，注意が必要である．
+本仕様書において説明するシステムは，プロジェクトセカイ カラフルステージ！（以下，プロセカ）において登場するキャラクターである「天馬咲希」のカードについてのデータ管理，編成シミュレーションを行うものである．
+本仕様書では，利用者向けにシステムの概要，目的，使用できる機能，操作方法について説明する．
 
-\subsection{システム概要}
-本システムはローカルで起動する Node/Express サーバ上で動作する Web アプリ群で，ブラウザから一覧・詳細・追加・編集・削除操作を行える。静的ファイルは `public/`、テンプレートは `views/` に格納される。
+\subsection{目的}
+本アプリケーションでは，プロセカに登場するキャラクターである「天馬咲希」のカードデータの一覧や詳細について確認し，実際に編成をシミュレーションし，チャレンジライブの総合力の計算や，カード単体の総合力の確認を行い，より良い編成を考えることができるようにすることを目的としている．
+プロセカ内では，キャラクターごとに複数のカードが存在し，それぞれに異なるステータスや効果が設定され，さらに，マスターランクやタイプボーナスなどの要素が総合力に影響を与えるため，これらを考慮した編成シミュレーションは，プレイヤーの戦略的な意思決定を支援する重要な機能となる．
+
 \subsection{目的}
 学習目的のための CRUD 操作・画面設計練習。複数のデータ型（キャラクター／カード）を管理し，簡易的な計算（編成の総合力）を行うことを想定している。
-\subsection{使用できる機能}
-利用者がブラウザから行える操作:
-\begin{itemize}
-	\item 各種一覧表示（キャラ，学マス，コンパス）
-	\item 詳細表示と編集
-	\item 新規追加（フォーム送信）
-	\item 削除（一覧から）
-	\item 編成画面での選択・保存・合計値計算（\texttt{kimatu\_saki}）
-\end{itemize}
-\subsection{操作方法}
-基本的な操作フロー:
-\begin{itemize}
-	\item サーバを起動して \url{http://localhost:8080/kimatu_home} を開く。
-	\item 目的の一覧ページ（"1つ目一覧"=キャラ，"2つ目一覧"=学マス，"3つ目一覧"=コンパス）をクリックする。
-	\item 一覧から名前をクリックして詳細を確認，編集や削除は一覧上のリンクから行う。
-	\item 追加は各一覧ページの「追加」ボタンからフォームを開き，必要項目を入力して送信する。
-	\item 編成画面では複数キャラをチェックして「保存」すると編成がサーバ側に保持され，補正値を反映した合計値が確認できる。
-\end{itemize}
 
-注意: データはサーバのメモリ内にあるためサーバ停止で消失します。永続化が必要な場合はデータベース導入が必要です。
+\subsection{使用できる機能}
+本アプリケーションでは，プロセカにおける「天馬咲希」のカードデータの一覧表示，詳細表示，追加，編集，削除機能を使用できる．
+また，編成画面では，複数のカードを選択して編成を保存し，選択したカードの総合力を計算して表示する機能も使用できる．
+
+\subsection{操作方法}
+まず，Chromeなどの検索エンジンより図\ref{fig:search}のように\url{http://localhost:8080/kimatu_home} にアクセスする．
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{./figs/search.png}
+\caption{ブラウザからの検索例}
+\label{fig:search}
+\end{figure}
+次に，図\ref{fig:home}のようにホームページが表示されるため，画面中央上部の「１つ目閲覧」をクリックする．
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{./figs/home.png}
+\caption{ホームページ}
+\label{fig:home}
+\end{figure}
+すると，図\ref{fig:list}のように「天馬咲希」のカード一覧ページが表示される．
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{./figs/list.png}
+\caption{カード一覧ページ}
+\label{fig:list}
+\end{figure}
+ここでは，カード名とタイプが表示されており，カード名をクリックすることで，図\ref{fig:detail}のように詳細表示ページへ遷移することができる．
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{./figs/detail.png}
+\caption{カード詳細表示ページ}
+\label{fig:detail}
+\end{figure}
+詳細表示ページでは，カードのレアリティ，スキル名，スキルレベル，マスターランク，初期総合力などの詳細情報が表示される．
+また，詳細表示ページからは，編集，削除，編成画面へ遷移することができる．
+編集ページでは，図\ref{fig:edit}のように，カードのステータスを編集することができる．
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{./figs/edit.png}
+\caption{カード編集ページ}
+\label{fig:edit}
+\end{figure}
+編集ページで変更を加えた後，「更新」ボタンをクリックすることで，編集内容が保存され，詳細表示ページへ移動する．
+削除ボタンを押すことで，図\ref{fig:delete}のように，カードの削除を確認することができる．
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{./figs/delete.png}
+\caption{カード削除ページ}
+\label{fig:delete}
+\end{figure}
+ここで「OK」をクリックすることで，カードが削除され，一覧表示ページへ移動しする．
+また，一覧表示ページの「追加フォームへ」ボタンをクリックすることで，図\ref{fig:add}のように，カードの追加フォームページへ遷移することができる．
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{./figs/add.png}
+\caption{カード追加フォームページ}
+\label{fig:add}
+\end{figure}
+追加フォームページでは，新しいカードの情報を入力し，「追加」ボタンをクリックすることで，カードが追加され，一覧表示ページへ移動する．
+さらに，一覧表示ページの「編成画面へ」ボタンをクリックすることで，図\ref{fig:formation}のように，編成画面へ遷移することができる．
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{./figs/formation1.png}
+\caption{編成画面}
+\label{fig:formation}
+\end{figure}
+編成画面では，最大5枚までのカードを選択し，「編成保存」ボタンをクリックすることで，図\ref{fig:formation2}のように選択したカードの総合力が計算され，表示される．
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{./figs/formation2.png}
+\caption{編成画面（総合力計算後）}
+\label{fig:formation2}
+\end{figure}
+以上が，本アプリケーションの主な操作方法である．
+これらの機能を活用することで，プロセカにおける「天馬咲希」のカードデータの管理と編成シミュレーションを効果的に行うことができる．
+また，削除機能や編集機能を活用することで，カードデータの最新情報を維持したり，「天馬咲希」以外のキャラクターの情報も入れることができるため，より良い編成を考えるための参考にすることができる．
 
 %課題手順リスト
 %開発者向け仕様書
