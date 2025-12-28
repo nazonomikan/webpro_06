@@ -12,7 +12,7 @@
 \usepackage{adjustbox}
 \usepackage{siunitx}
 \usepackage{booktabs}
-
+\usepackage{longtable}
 \usepackage{tikz}
 \usetikzlibrary{shapes.geometric, arrows, positioning}
 
@@ -69,7 +69,7 @@ total\_status & カードの初期総合力（数値） \\\hline
 本アプリケーションのページ構造，また，対応するメソッドについて図\ref{fig:page_structure_app1}を用いて説明する．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{../figs/saki.png}
+\includegraphics[width=0.8\textwidth]{./figs/saki.png}
 \caption{app1:kimatu\_sakiのページ構造}
 \label{fig:page_structure_app1}
 \end{figure}
@@ -143,13 +143,135 @@ GET/POST & /kimatu\_saki\_formation & 編成画面表示/保存 \\\hline
 編成の保存，総合力計算のトリガーはフォーム送信／非同期通信いずれにも対応させており，ユーザーが一覧画面を離れずに操作を完了できるようにした．
 採用理由は，詳細画面に遷移して戻る従来のフローだとスクロール位置や選択状態が失われる可能性があるためであり，選択の即時反映と一覧の継続的な参照を可能にすることで操作性を向上させるためである．
 \paragraph{CSS(見た目・UI)}
-レイアウトは主に `display:flex` を使用しており，これはカード群を横並びや縦並びのレスポンシブな配置に容易に対応させるために選択した．
-各カード表示はカード型のコンテナとしてスタイリングし，余白や影，ボーダーで視覚的に区切ることで，一覧の中から目的のカードを直感的に見つけやすくしている．
-ホバー時には `transition` を用いた軽い浮き上がりアニメーションを付与しており，これによりユーザー操作への即時フィードバックとタッチターゲットの明確化を行っている．
-選択中のカードや編成用の入力パネルは `position:fixed` と `z-index` を用いたオーバーレイ表示として実装し，一覧のスクロール位置を維持したまま操作できるようにしている．
-レスポンシブ対応はメディアクエリとフレックスの伸縮性を組み合わせ，画面幅に応じてカードの列数やパネルの表示方法を変えることで実現している．
-アクセシビリティ面では，フォーカス時の視覚指標（アウトラインや背景色の変更）を用意し，キーボード操作やスクリーンリーダー利用時の識別性を高めている．
-これらの工夫により，視認性と操作性を両立させ，ユーザーが目的のカードを効率よく確認・編成できるよう設計している．
+本節では，実際にビューで使用されている `public/kimatu\_saki.css` の主要ルールを行単位で示し，目的を表\ref{tab:css_app1}に記述する．
+\begin{longtable}{|p{0.45\textwidth}|p{0.45\textwidth}|}
+\caption{app1: 使用している CSS（行ごとの詳細）}
+\label{tab:css_app1}\\
+\hline
+CSS（行） & 説明 \\
+\hline
+\endfirsthead
+\hline
+CSS（行） & 説明 \\
+\hline
+\endhead
+    \texttt{body.blue-theme \{ font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; \}} & システムフォント優先の指定．レンダリング速度とOSに自然な見た目を確保するため． \\
+\hline
+    \texttt{body.blue-theme \{ background: linear-gradient(180deg, \#e6f0ff, \#f8fbff); \}} & ページ全体の背景グラデーション．視認性と統一感の向上． \\
+\hline
+    \texttt{body.blue-theme \{ color: \#012a4a; \}} & 主要なテキスト色の指定．背景とのコントラスト調整． \\
+\hline
+    \texttt{body.blue-theme \{ padding: 24px; \}} & ページ内余白．コンテナとブラウザ端の間隔を確保． \\
+\hline
+    \texttt{.container \{ max-width: 960px; \}} & コンテンツ幅の上限を設定し読みやすさを保つ． \\
+\hline
+    \texttt{.container \{ margin: 0 auto; \}} & 横中央寄せ． \\
+\hline
+    \texttt{.container \{ background: \#ffffff; \}} & コンテンツ領域の背景色．カード風の白地を作る． \\
+\hline
+    \texttt{.container \{ border-radius: 10px; \}} & 角丸で柔らかい見た目に． \\
+\hline
+    \texttt{.container \{ box-shadow: 0 6px 18px rgba(2, 6, 23, 0.06); \}} & 浮き上がりを演出し視覚的な階層を付与． \\
+\hline
+    \texttt{.container \{ overflow: hidden; \}} & 子要素のはみ出しを抑制して角丸等と合わせる． \\
+\hline
+    \texttt{.container \{ padding: 18px; \}} & コンテンツ内余白． \\
+\hline
+    \texttt{.page-header \{ display: flex; \}} & ヘッダ内をフレックスで整列．横並びレイアウトに使用． \\
+\hline
+    \texttt{.page-header \{ justify-content: space-between; \}} & 左右に要素を分散配置． \\
+\hline
+    \texttt{.page-header \{ align-items: center; \}} & 垂直方向の中央揃え． \\
+\hline
+    \texttt{.page-header \{ gap: 12px; \}} & 要素間の隙間を確保． \\
+\hline
+    \texttt{.page-header \{ margin-bottom: 12px; \}} & 下部の余白． \\
+\hline
+    \texttt{.page-header h2 \{ margin: 0; \}} & 見出しの余白リセット． \\
+\hline
+    \texttt{.page-header h2 \{ color: \#013a63; \}} & 見出しの色指定． \\
+\hline
+    \texttt{.page-header h2 \{ font-size: 1.25rem; \}} & 見出しの文字サイズ． \\
+\hline
+    \texttt{.saki-table \{ width: 100\%; \}} & テーブルを横幅に合わせる． \\
+\hline
+    \texttt{.saki-table \{ border-collapse: collapse; \}} & 隣接するセルの境界を重ねて表示． \\
+\hline
+    \texttt{.saki-table \{ margin-top: 6px; \}} & テーブル上部の余白． \\
+\hline
+    \texttt{.saki-table th, .saki-table td \{ padding: 12px 10px; \}} & セル内余白．可読性向上のため広めに取る． \\
+\hline
+    \texttt{.saki-table th, .saki-table td \{ text-align: left; \}} & テキスト左揃え． \\
+\hline
+    \texttt{.saki-table th, .saki-table td \{ border-bottom: 1px solid \#e6eef8; \}} & セル間の区切り線．行の区別を明確化． \\
+\hline
+    \texttt{.saki-table th \{ background: linear-gradient(90deg, \#d9eefb, \#c6e6ff); \}} & ヘッダ行の背景グラデーション．視認性向上． \\
+\hline
+    \texttt{.saki-table th \{ color: \#003a63; \}} & ヘッダのテキスト色． \\
+\hline
+    \texttt{.saki-table th \{ font-weight: 600; \}} & ヘッダの太字指定． \\
+\hline
+    \texttt{.saki-table tr:nth-child(even) td \{ background: \#f4f9ff; \}} & 偶数行の背景．帯状で読みやすくするため． \\
+\hline
+    \texttt{.saki-table tr:hover td \{ background: \#e8f3ff; \}} & 行ホバー時の背景色変更で強調． \\
+\hline
+    \texttt{.saki-table tr:hover td \{ transition: background .12s; \}} & ホバー背景の遷移速度を指定．滑らかな変化． \\
+\hline
+    \texttt{.saki-table a \{ color: \#0b66b3; \}} & テーブル内リンクの色指定． \\
+\hline
+    \texttt{.saki-table a \{ text-decoration: none; \}} & リンク下線を外す． \\
+\hline
+    \texttt{.saki-table a:hover \{ color: \#024b85; \}} & リンクホバー時の色． \\
+\hline
+    \texttt{.saki-table a:hover \{ text-decoration: underline; \}} & ホバー時に下線を表示しリンク性を示す． \\
+\hline
+    \texttt{.footer-actions \{ display: flex; \}} & フッタのアクション群を横並びに． \\
+\hline
+    \texttt{.footer-actions \{ gap: 10px; \}} & ボタン間隔を確保． \\
+\hline
+    \texttt{.footer-actions \{ margin-top: 14px; \}} & フッタ上部の余白． \\
+\hline
+    \texttt{.footer-actions \{ flex-wrap: wrap; \}} & 画面幅が狭い時に折り返す． \\
+\hline
+    \texttt{.btn \{ display: inline-block; \}} & ボタンをインラインブロック化し幅や余白を制御可能に． \\
+\hline
+    \texttt{.btn \{ padding: 8px 12px; \}} & ボタン内余白． \\
+\hline
+    \texttt{.btn \{ border-radius: 6px; \}} & ボタン角丸． \\
+\hline
+    \texttt{.btn \{ text-decoration: none; \}} & リンクボタンの下線を消す． \\
+\hline
+    \texttt{.btn \{ color: \#fff; \}} & ボタン文字色． \\
+\hline
+    \texttt{.btn \{ background: \#0b66b3; \}} & デフォルトボタン背景色． \\
+\hline
+    \texttt{.btn \{ box-shadow: 0 2px 6px rgba(11, 102, 179, 0.18); \}} & ボタンに軽い影を付け視覚的に浮かせる． \\
+\hline
+    \texttt{.btn:hover \{ background: \#085aab; \}} & ホバー時に色を暗くして押下感を出す． \\
+\hline
+    \texttt{.btn.add \{ background: \#0b66b3; \}} & 追加ボタンの色（デフォルトと同じ）． \\
+\hline
+    \texttt{.btn.formation \{ background: \#0a5e9d; \}} & 編成ボタンの色差分． \\
+\hline
+    \texttt{.btn.home \{ background: \#05507a; \}} & ホームへ戻るボタンの色． \\
+\hline
+    \texttt{.link.edit \{ margin-right: 8px; \}} & 編集リンクの右余白． \\
+\hline
+    \texttt{.link.edit \{ color: \#045fb4; \}} & 編集リンクの色． \\
+\hline
+    \texttt{.link.delete \{ color: \#b02a2a; \}} & 削除リンクを赤系で強調． \\
+\hline
+    \texttt{@media (max-width:720px) \{ .container \{ padding: 12px; \} \}} & 小画面でのコンテナ内余白を縮める． \\
+\hline
+    \texttt{@media (max-width:720px) \{ .saki-table th, .saki-table td \{ padding: 8px; \} \}} & 小画面でセル内余白を縮小して表示領域を確保． \\
+\hline
+    \texttt{@media (max-width:720px) \{ .page-header \{ flex-direction: column; align-items: flex-start; \} \}} & ヘッダを縦並びにして狭い画面に対応． \\
+\hline
+    \texttt{@media (max-width:720px) \{ .footer-actions \{ flex-direction: column; align-items: stretch; \} \}} & フッタアクションを縦並びにして操作しやすくする． \\
+\hline
+    \texttt{@media (max-width:720px) \{ .btn \{ width: 100\%; text-align: center; \} \}} & モバイルでボタンをフル幅にして押しやすくする． \\
+\hline
+\end{longtable}
 
 \subsection{app2:kimatu\_gakumasu}
 \subsubsection{システム構成}
@@ -188,7 +310,7 @@ effect & カードの効果（文字列） \\\hline
 本アプリケーションのページ構造，また，対応するメソッドについて図\ref{fig:page_structure_app2}を用いて説明する．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{../figs/gakumasu.png}
+\includegraphics[width=0.8\textwidth]{./figs/gakumasu.png}
 \caption{app2:kimatu\_gakumasuのページ構造}
 \label{fig:page_structure_app2}
 \end{figure}
@@ -219,10 +341,61 @@ effect & カードの効果（文字列） \\\hline
 \subsubsection{授業外使用技術について}
 本節では，授業で扱わなかったが本アプリケーションで採用した技術とその採用理由について説明する．
 \paragraph{CSS(見た目・UI)}
-全体レイアウトは `display:flex` を基本とし，カード群の整列とスペース配分を実現している．
-カードはカード型のボックスとしてスタイルを統一し，パディング・マージン・ボーダーで項目の区切りを明確している．
-ホバー効果には `transition` を用い，ユーザーに対して直感的で軽快な操作フィードバックを提供している．
-スマートフォンなど小画面ではフレックスの折り返しや幅制御でレイアウトを最適化し，読みやすさを維持している．
+実際にビューで使用されている `public/kimatu\_saki.css` の主要ルールを同様に行単位で示し，目的を表\ref{tab:css_app2}に記述する．
+\begin{longtable}{|p{0.45\textwidth}|p{0.45\textwidth}|}
+\caption{app2: 使用している CSS（行ごとの詳細）}
+\label{tab:css_app2}\\
+\hline
+CSS（行） & 説明 \\
+\hline
+\endfirsthead
+\hline
+CSS（行） & 説明 \\
+\hline
+\endhead
+    \texttt{body.blue-theme \{ font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; \}} & システムフォント優先の指定． \\
+\hline
+    \texttt{body.blue-theme \{ background: linear-gradient(180deg, \#e6f0ff, \#f8fbff); \}} & 背景グラデーション． \\
+\hline
+    \texttt{body.blue-theme \{ color: \#012a4a; \}} & 主要テキスト色． \\
+\hline
+    \texttt{body.blue-theme \{ padding: 24px; \}} & ページ余白． \\
+\hline
+    \texttt{.container \{ max-width: 960px; margin: 0 auto; background: \#ffffff; border-radius: 10px; box-shadow: 0 6px 18px rgba(2,6,23,0.06); overflow: hidden; padding: 18px; \}} & コンテンツ領域のレイアウトと装飾（幅・中央寄せ・背景・角丸・影・余白）． \\
+\hline
+    \texttt{.page-header \{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px; \}} & ヘッダのフレックス配置． \\
+\hline
+    \texttt{.saki-table \{ width:100\%; border-collapse:collapse; margin-top:6px; \}} & テーブル表示の基本設定． \\
+\hline
+    \texttt{.saki-table th, .saki-table td \{ padding:12px 10px; text-align:left; border-bottom:1px solid \#e6eef8; \}} & セルの余白・整列・区切り線． \\
+\hline
+    \texttt{.saki-table th \{ background: linear-gradient(90deg,\#d9eefb,\#c6e6ff); color:\#003a63; font-weight:600; \}} & ヘッダの背景・色・太字． \\
+\hline
+    \texttt{.saki-table tr:nth-child(even) td \{ background:\#f4f9ff; \}} & 偶数行の背景． \\
+\hline
+    \texttt{.saki-table tr:hover td \{ background:\#e8f3ff; transition:background .12s; \}} & 行ホバーでの強調． \\
+\hline
+    \texttt{.saki-table a \{ color:\#0b66b3; text-decoration:none; \}} & テーブル内リンクの見た目． \\
+\hline
+    \texttt{.footer-actions \{ display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; \}} & フッタのボタン群の配置． \\
+\hline
+    \texttt{.btn \{ display:inline-block; padding:8px 12px; border-radius:6px; text-decoration:none; color:\#fff; background:\#0b66b3; box-shadow:0 2px 6px rgba(11,102,179,0.18); \}} & ボタンの基本スタイル． \\
+\hline
+    \texttt{.btn\:hover \{ background:\#085aab; \}} & ボタンホバー時の色変化． \\
+\hline
+    \texttt{.btn.add \{ background:\#0b66b3; \}} & 追加ボタン． \\
+\hline
+    \texttt{.btn.formation \{ background:\#0a5e9d; \}} & 編成ボタン． \\
+\hline
+    \texttt{.btn.home \{ background:\#05507a; \}} & ホーム戻るボタン． \\
+\hline
+    \texttt{.link.edit \{ margin-right:8px; color:\#045fb4; \}} & 編集リンクの余白と色． \\
+\hline
+    \texttt{.link.delete \{ color:\#b02a2a; \}} & 削除リンクの色． \\
+\hline
+    \texttt{@media (max-width:720px) \{ .container \{ padding:12px; \} .saki-table th, .saki-table td \{ padding:8px; \} .page-header \{ flex-direction:column; align-items:flex-start; \} .footer-actions \{ flex-direction:column; align-items:stretch; \} .btn \{ width:100\%; text-align:center; \} \}} & モバイル対応のレイアウト調整（余白・折返し・ボタン幅など）． \\
+\hline
+\end{longtable}
 
 \subsection{app3:kimatu\_compass}
 \subsubsection{システム構成}
@@ -265,7 +438,7 @@ effect & 効果（文字列） \\\hline
 本アプリケーションのページ構造，また，対応するメソッドについて図\ref{fig:page_structure_app3}を用いて説明する．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{../figs/compass.png}
+\includegraphics[width=0.8\textwidth]{./figs/compass.png}
 \caption{app3:kimatu\_compassのページ構造}
 \label{fig:page_structure_app3}
 \end{figure}
@@ -296,10 +469,55 @@ effect & 効果（文字列） \\\hline
 \subsubsection{授業外使用技術について}
 本節では，授業で扱わなかったが本アプリケーションで採用した技術とその採用理由について説明する．
 \paragraph{CSS(見た目・UI)}
-レイアウトは `display:flex` を中心に構成しており，カードの等間隔配置や中央揃えを実現している．
-各カードは視覚的に識別しやすいようにシャドウや角丸を用いてカード感を出し，情報の優先度に応じてテキストサイズや色を調整している．
-ホバー時のアニメーションは `transition` を用いて，操作時の応答性を向上させると同時にユーザーの注目を誘導している．
-レイアウトの崩れを防ぐためにブレークポイントの設定をし，異なる画面サイズでもレイアウトと操作性を保つようにしている．
+同様に，`public/kimatu\_saki.css` の主要ルールを行ごとに示し，目的を表\ref{tab:css_app3}に記述する．
+\begin{longtable}{|p{0.45\textwidth}|p{0.45\textwidth}|}
+\caption{app3: 使用している CSS（行ごとの詳細）}
+\label{tab:css_app3}\\
+\hline
+CSS（行） & 説明 \\
+\hline
+\endfirsthead
+\hline
+CSS（行） & 説明 \\
+\hline
+\endhead
+	\texttt{body.blue-theme \{ font-family:-apple-system, "Helvetica Neue", Arial, sans-serif; \}} & システムフォント優先で見た目をOSネイティブに合わせる． \\
+\hline
+	\texttt{body.blue-theme \{ background:linear-gradient(180deg,\#e6f0ff,\#f8fbff); \}} & ページ背景のグラデーション． \\
+\hline
+	\texttt{body.blue-theme \{ color:\#012a4a; padding:24px; \}} & 文字色とページ余白． \\
+\hline
+	\texttt{.container \{ max-width:960px; margin:0 auto; background:\#ffffff; border-radius:10px; box-shadow:0 6px 18px rgba(2,6,23,0.06); overflow:hidden; padding:18px; \}} & コンテンツの幅・中央配置・背景・角丸・影・余白をまとめて指定． \\
+\hline
+	\texttt{.page-header \{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px; \}} & ヘッダ配置（フレックス）． \\
+\hline
+	\texttt{.saki-table \{ width:100\%; border-collapse:collapse; margin-top:6px; \}} & テーブルの基本設定． \\
+\hline
+	\texttt{.saki-table th, .saki-table td \{ padding:12px 10px; text-align:left; border-bottom:1px solid \#e6eef8; \}} & セル内余白・整列・区切り線． \\
+\hline
+	\texttt{.saki-table th \{ background:linear-gradient(90deg,\#d9eefb,\#c6e6ff); color:\#003a63; font-weight:600; \}} & ヘッダの装飾． \\
+\hline
+	\texttt{.saki-table tr:nth-child(even) td \{ background:\#f4f9ff; \}} & 偶数行の背景で読みやすさ向上． \\
+\hline
+	\texttt{.saki-table tr:hover td \{ background:\#e8f3ff; transition:background .12s; \}} & 行ホバーで強調，アニメーションの指定． \\
+\hline
+	\texttt{.saki-table a \{ color:\#0b66b3; text-decoration:none; \}} & テーブル内リンクの見た目． \\
+\hline
+	\texttt{.saki-table a:hover \{ color:\#024b85; text-decoration:underline; \}} & リンクホバー時に視覚的な変化を付与． \\
+\hline
+	\texttt{.footer-actions \{ display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; \}} & フッタボタンの配置と折返し対応． \\
+\hline
+	\texttt{.btn \{ display:inline-block; padding:8px 12px; border-radius:6px; text-decoration:none; color:\#fff; background:\#0b66b3; box-shadow:0 2px 6px rgba(11,102,179,0.18); \}} & ボタンの基本スタイル（視認性と操作性向上）． \\
+\hline
+	\texttt{.btn\:hover \{ background:\#085aab; \}} & ホバー時のフィードバック． \\
+\hline
+	\texttt{.link.edit \{ margin-right:8px; color:\#045fb4; \}} & 編集リンクの余白と色． \\
+\hline
+	\texttt{.link.delete \{ color:\#b02a2a; \}} & 削除リンクを目立たせる色． \\
+\hline
+	\texttt{@media (max-width:720px) \{ .container \{ padding:12px; \} .saki-table th, .saki-table td \{ padding:8px; \} .page-header \{ flex-direction:column; align-items:flex-start; \} .footer-actions \{ flex-direction:column; align-items:stretch; \} .btn \{ width:100\%; text-align:center; \} \}} & モバイル画面でのレイアウト調整（余白・折返し・ボタン幅）． \\
+\hline
+\end{longtable}
 
 \section{管理者向け仕様書}
 本節では，管理者向けに各webアプリケーションのインストールから起動までの手順，不具合情報について説明する．
@@ -314,7 +532,7 @@ app2,app3についても同様の手順でインストール，起動が可能�
 本アプリケーションの遷移の流れについて図\ref{fig:kanri}を用いて説明する．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{../figs/kanri.png}
+\includegraphics[width=0.8\textwidth]{./figs/kanri.png}
 \caption{管理者向け仕様書:アプリケーションの流れ}
 \label{fig:kanri}
 \end{figure}
@@ -374,7 +592,7 @@ npm start
 プロセカ内では，キャラクターごとに複数のカードが存在し，それぞれに異なるステータスや効果が設定され，さらに，マスターランクやタイプボーナスなどの要素が総合力に影響を与えるため，これらを考慮した編成シミュレーションは，プレイヤーの戦略的な意思決定を支援する重要な機能となる．
 
 \subsection{目的}
-学習目的のための CRUD 操作・画面設計練習。複数のデータ型（キャラクター／カード）を管理し，簡易的な計算（編成の総合力）を行うことを想定している。
+学習目的のための CRUD 操作・画面設計練習．複数のデータ型（キャラクター／カード）を管理し，簡易的な計算（編成の総合力）を行うことを想定している．
 
 \subsection{使用できる機能}
 本アプリケーションでは，プロセカにおける「天馬咲希」のカードデータの一覧表示，詳細表示，追加，編集，削除機能を使用できる．
@@ -384,28 +602,28 @@ npm start
 まず，Chromeなどの検索エンジンより図\ref{fig:search}のように\url{http://localhost:8080/kimatu_home} にアクセスする．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{../figs/search.png}
+\includegraphics[width=0.8\textwidth]{./figs/search.png}
 \caption{ブラウザからの検索例}
 \label{fig:search}
 \end{figure}
 次に，図\ref{fig:home}のようにホームページが表示されるため，画面中央上部の「１つ目閲覧」をクリックする．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{../figs/home.png}
+\includegraphics[width=0.8\textwidth]{./figs/home.png}
 \caption{ホームページ}
 \label{fig:home}
 \end{figure}
 すると，図\ref{fig:list}のように「天馬咲希」のカード一覧ページが表示される．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{../figs/list.png}
+\includegraphics[width=0.8\textwidth]{./figs/list.png}
 \caption{カード一覧ページ}
 \label{fig:list}
 \end{figure}
 ここでは，カード名とタイプが表示されており，カード名をクリックすることで，図\ref{fig:detail}のように詳細表示ページへ遷移することができる．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{../figs/detail.png}
+\includegraphics[width=0.8\textwidth]{./figs/detail.png}
 \caption{カード詳細表示ページ}
 \label{fig:detail}
 \end{figure}
@@ -414,7 +632,7 @@ npm start
 編集ページでは，図\ref{fig:edit}のように，カードのステータスを編集することができる．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{../figs/edit.png}
+\includegraphics[width=0.8\textwidth]{./figs/edit.png}
 \caption{カード編集ページ}
 \label{fig:edit}
 \end{figure}
@@ -422,7 +640,7 @@ npm start
 削除ボタンを押すことで，図\ref{fig:delete}のように，カードの削除を確認することができる．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{../figs/delete.png}
+\includegraphics[width=0.8\textwidth]{./figs/delete.png}
 \caption{カード削除ページ}
 \label{fig:delete}
 \end{figure}
@@ -430,7 +648,7 @@ npm start
 また，一覧表示ページの「追加フォームへ」ボタンをクリックすることで，図\ref{fig:add}のように，カードの追加フォームページへ遷移することができる．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{../figs/add.png}
+\includegraphics[width=0.8\textwidth]{./figs/add.png}
 \caption{カード追加フォームページ}
 \label{fig:add}
 \end{figure}
@@ -438,14 +656,14 @@ npm start
 さらに，一覧表示ページの「編成画面へ」ボタンをクリックすることで，図\ref{fig:formation}のように，編成画面へ遷移することができる．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{../figs/formation1.png}
+\includegraphics[width=0.8\textwidth]{./figs/formation1.png}
 \caption{編成画面}
 \label{fig:formation}
 \end{figure}
 編成画面では，最大5枚までのカードを選択し，「編成保存」ボタンをクリックすることで，図\ref{fig:formation2}のように選択したカードの総合力が計算され，表示される．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{../figs/formation2.png}
+\includegraphics[width=0.8\textwidth]{./figs/formation2.png}
 \caption{編成画面（総合力計算後）}
 \label{fig:formation2}
 \end{figure}
