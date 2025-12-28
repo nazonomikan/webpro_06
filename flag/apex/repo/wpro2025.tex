@@ -69,7 +69,7 @@ total\_status & カードの初期総合力（数値） \\\hline
 本アプリケーションのページ構造，また，対応するメソッドについて図\ref{fig:page_structure_app1}を用いて説明する．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{./figs/saki.png}
+\includegraphics[width=0.8\textwidth]{../figs/saki.png}
 \caption{app1:kimatu\_sakiのページ構造}
 \label{fig:page_structure_app1}
 \end{figure}
@@ -143,9 +143,13 @@ GET/POST & /kimatu\_saki\_formation & 編成画面表示/保存 \\\hline
 編成の保存，総合力計算のトリガーはフォーム送信／非同期通信いずれにも対応させており，ユーザーが一覧画面を離れずに操作を完了できるようにした．
 採用理由は，詳細画面に遷移して戻る従来のフローだとスクロール位置や選択状態が失われる可能性があるためであり，選択の即時反映と一覧の継続的な参照を可能にすることで操作性を向上させるためである．
 \paragraph{CSS(見た目・UI)}
-レイアウトには'display:flex'を多用し，カード表示はカード型の横並び（フレックスコンテナ）で実装した．
-また，カードのホバー時に'transition'を用いた軽い浮き上がりアニメーションの付与を行い，選択中のカードや編成の入力欄は'position:fixed'と'z-index'によるオーバーレイ表示で編成用UIを重ねて表示する実装を行っている．
-理由は，カードをカードらしく視覚的に整理することで目的のカードが見つけやすくなること，固定オーバーレイにより編成中でも一覧の位置や詳細データを保持できること，および小さなアニメーションで操作のフィードバックを与えることで視認性と利便性が向上すると判断したためである．
+レイアウトは主に `display:flex` を使用しており，これはカード群を横並びや縦並びのレスポンシブな配置に容易に対応させるために選択した．
+各カード表示はカード型のコンテナとしてスタイリングし，余白や影，ボーダーで視覚的に区切ることで，一覧の中から目的のカードを直感的に見つけやすくしている．
+ホバー時には `transition` を用いた軽い浮き上がりアニメーションを付与しており，これによりユーザー操作への即時フィードバックとタッチターゲットの明確化を行っている．
+選択中のカードや編成用の入力パネルは `position:fixed` と `z-index` を用いたオーバーレイ表示として実装し，一覧のスクロール位置を維持したまま操作できるようにしている．
+レスポンシブ対応はメディアクエリとフレックスの伸縮性を組み合わせ，画面幅に応じてカードの列数やパネルの表示方法を変えることで実現している．
+アクセシビリティ面では，フォーカス時の視覚指標（アウトラインや背景色の変更）を用意し，キーボード操作やスクリーンリーダー利用時の識別性を高めている．
+これらの工夫により，視認性と操作性を両立させ，ユーザーが目的のカードを効率よく確認・編成できるよう設計している．
 
 \subsection{app2:kimatu\_gakumasu}
 \subsubsection{システム構成}
@@ -184,7 +188,7 @@ effect & カードの効果（文字列） \\\hline
 本アプリケーションのページ構造，また，対応するメソッドについて図\ref{fig:page_structure_app2}を用いて説明する．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{./figs/gakumasu.png}
+\includegraphics[width=0.8\textwidth]{../figs/gakumasu.png}
 \caption{app2:kimatu\_gakumasuのページ構造}
 \label{fig:page_structure_app2}
 \end{figure}
@@ -215,9 +219,10 @@ effect & カードの効果（文字列） \\\hline
 \subsubsection{授業外使用技術について}
 本節では，授業で扱わなかったが本アプリケーションで採用した技術とその採用理由について説明する．
 \paragraph{CSS(見た目・UI)}
-レイアウトには'display:flex'を多用し，カード表示はカード型の横並び（フレックスコンテナ）で実装した．
-また，カードのホバー時に'transition'を用いた軽い浮き上がりアニメーションの付与を行っている．
-理由は，視覚的に整理することで目的の項目が見つけやすくなること，および小さなアニメーションで操作のフィードバックを与えることで視認性と利便性が向上すると判断したためである．
+全体レイアウトは `display:flex` を基本とし，カード群の整列とスペース配分を実現している．
+カードはカード型のボックスとしてスタイルを統一し，パディング・マージン・ボーダーで項目の区切りを明確している．
+ホバー効果には `transition` を用い，ユーザーに対して直感的で軽快な操作フィードバックを提供している．
+スマートフォンなど小画面ではフレックスの折り返しや幅制御でレイアウトを最適化し，読みやすさを維持している．
 
 \subsection{app3:kimatu\_compass}
 \subsubsection{システム構成}
@@ -260,7 +265,7 @@ effect & 効果（文字列） \\\hline
 本アプリケーションのページ構造，また，対応するメソッドについて図\ref{fig:page_structure_app3}を用いて説明する．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{./figs/compass.png}
+\includegraphics[width=0.8\textwidth]{../figs/compass.png}
 \caption{app3:kimatu\_compassのページ構造}
 \label{fig:page_structure_app3}
 \end{figure}
@@ -291,9 +296,10 @@ effect & 効果（文字列） \\\hline
 \subsubsection{授業外使用技術について}
 本節では，授業で扱わなかったが本アプリケーションで採用した技術とその採用理由について説明する．
 \paragraph{CSS(見た目・UI)}
-レイアウトには'display:flex'を多用し，カード表示はカード型の横並び（フレックスコンテナ）で実装した．
-また，カードのホバー時に'transition'を用いた軽い浮き上がりアニメーションの付与を行っている．
-理由は，視覚的に整理することで目的の項目が見つけやすくなること，および小さなアニメーションで操作のフィードバックを与えることで視認性と利便性が向上すると判断したためである．
+レイアウトは `display:flex` を中心に構成しており，カードの等間隔配置や中央揃えを実現している．
+各カードは視覚的に識別しやすいようにシャドウや角丸を用いてカード感を出し，情報の優先度に応じてテキストサイズや色を調整している．
+ホバー時のアニメーションは `transition` を用いて，操作時の応答性を向上させると同時にユーザーの注目を誘導している．
+レイアウトの崩れを防ぐためにブレークポイントの設定をし，異なる画面サイズでもレイアウトと操作性を保つようにしている．
 
 \section{管理者向け仕様書}
 本節では，管理者向けに各webアプリケーションのインストールから起動までの手順，不具合情報について説明する．
@@ -308,7 +314,7 @@ app2,app3についても同様の手順でインストール，起動が可能�
 本アプリケーションの遷移の流れについて図\ref{fig:kanri}を用いて説明する．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{./figs/kanri.png}
+\includegraphics[width=0.8\textwidth]{../figs/kanri.png}
 \caption{管理者向け仕様書:アプリケーションの流れ}
 \label{fig:kanri}
 \end{figure}
@@ -378,28 +384,28 @@ npm start
 まず，Chromeなどの検索エンジンより図\ref{fig:search}のように\url{http://localhost:8080/kimatu_home} にアクセスする．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{./figs/search.png}
+\includegraphics[width=0.8\textwidth]{../figs/search.png}
 \caption{ブラウザからの検索例}
 \label{fig:search}
 \end{figure}
 次に，図\ref{fig:home}のようにホームページが表示されるため，画面中央上部の「１つ目閲覧」をクリックする．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{./figs/home.png}
+\includegraphics[width=0.8\textwidth]{../figs/home.png}
 \caption{ホームページ}
 \label{fig:home}
 \end{figure}
 すると，図\ref{fig:list}のように「天馬咲希」のカード一覧ページが表示される．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{./figs/list.png}
+\includegraphics[width=0.8\textwidth]{../figs/list.png}
 \caption{カード一覧ページ}
 \label{fig:list}
 \end{figure}
 ここでは，カード名とタイプが表示されており，カード名をクリックすることで，図\ref{fig:detail}のように詳細表示ページへ遷移することができる．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{./figs/detail.png}
+\includegraphics[width=0.8\textwidth]{../figs/detail.png}
 \caption{カード詳細表示ページ}
 \label{fig:detail}
 \end{figure}
@@ -408,7 +414,7 @@ npm start
 編集ページでは，図\ref{fig:edit}のように，カードのステータスを編集することができる．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{./figs/edit.png}
+\includegraphics[width=0.8\textwidth]{../figs/edit.png}
 \caption{カード編集ページ}
 \label{fig:edit}
 \end{figure}
@@ -416,7 +422,7 @@ npm start
 削除ボタンを押すことで，図\ref{fig:delete}のように，カードの削除を確認することができる．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{./figs/delete.png}
+\includegraphics[width=0.8\textwidth]{../figs/delete.png}
 \caption{カード削除ページ}
 \label{fig:delete}
 \end{figure}
@@ -424,7 +430,7 @@ npm start
 また，一覧表示ページの「追加フォームへ」ボタンをクリックすることで，図\ref{fig:add}のように，カードの追加フォームページへ遷移することができる．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{./figs/add.png}
+\includegraphics[width=0.8\textwidth]{../figs/add.png}
 \caption{カード追加フォームページ}
 \label{fig:add}
 \end{figure}
@@ -432,14 +438,14 @@ npm start
 さらに，一覧表示ページの「編成画面へ」ボタンをクリックすることで，図\ref{fig:formation}のように，編成画面へ遷移することができる．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{./figs/formation1.png}
+\includegraphics[width=0.8\textwidth]{../figs/formation1.png}
 \caption{編成画面}
 \label{fig:formation}
 \end{figure}
 編成画面では，最大5枚までのカードを選択し，「編成保存」ボタンをクリックすることで，図\ref{fig:formation2}のように選択したカードの総合力が計算され，表示される．
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{./figs/formation2.png}
+\includegraphics[width=0.8\textwidth]{../figs/formation2.png}
 \caption{編成画面（総合力計算後）}
 \label{fig:formation2}
 \end{figure}
